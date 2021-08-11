@@ -9,7 +9,6 @@ import ComparisonPage from './ComparisonPage'
 
 
 export default function App(){
-  console.log(process.env)
     return (
         <Router>
             <Route exact path='/'><HomePage/></Route>
