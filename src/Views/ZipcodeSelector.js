@@ -1,16 +1,18 @@
-import React,  {useState, useEffect} from 'react';
-
+import React, { useState, useEffect } from 'react';
+import ZipCodeContext from '../Contexts/zipCode'
 export default function ZipcodeSelector(props) {
 
     const possibilities = props.data;
 
-    const [selectedZipcode, setZipcode] = useState(null);
+
+    // changed useState to useContext to connect 2 components selector and mapview.
+    const {selectedZipcode, setZipcode} = React.useContext(ZipCodeContext)
 
 
     // Run processSelection() on any rerender WHEN the value of selectedZipcode has changed
     useEffect(() => {
         processSelection();
-    }, [selectedZipcode]); 
+    }, [selectedZipcode]);
 
 
     // Check to see if we entered a zipcode, before changing the state
@@ -20,9 +22,9 @@ export default function ZipcodeSelector(props) {
 
         if (!isNumber) {
             return;
-         } 
+        }
 
-         setZipcode(selection);
+        setZipcode(selection);
     }
 
 
@@ -36,23 +38,23 @@ export default function ZipcodeSelector(props) {
         }
 
         //Perform something meaningful here - maybe return data out of this component
-        alert("Selected zipcode: " + data);
+        // alert("Selected zipcode: " + data);
     }
 
 
- 
+
 
 
     return (
-        <div style={{marginTop: '100px'}}>
+        <div style={{ marginTop: '100px' }}>
 
 
             <select className="ui search dropdown"
-             onInput={(e) => validateZipcode(e.target.value)} >
-                 
+                onInput={(e) => validateZipcode(e.target.value)} >
+
                 <option value="">Enter in zip code:</option>
 
-                {possibilities.map((zipcode, index) => 
+                {possibilities.map((zipcode, index) =>
                     <option key={index}>
                         {zipcode}
                     </option>)}

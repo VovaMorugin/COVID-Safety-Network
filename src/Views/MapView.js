@@ -1,30 +1,28 @@
 import { Map, InfoWindow, GoogleApiWrapper, Polygon } from 'google-maps-react';
 import React from 'react';
 import geoData from '../Model/GEODATA'
-import ZIPCODE_INFO from '../Model/ZIPCODES'
 import CaseModal from './CaseModal'
+import ZipCodeContext from '../Contexts/zipCode'
+import zipCodeInfo from '../Model/ZIPCODES'
+
 function MapContainer(props) {
+
 
     const defaultCenter = {
         lat: 33.06997875622593,
         lng: -116.60778304343944
     }
-
-    const [showingInfoWindow, setShowingInfoWindow] = React.useState(false)
-    const [modalCoordinates, setModalCoordinates] = React.useState(defaultCenter)
+    //Connects context
+    const { selectedZipcode, setZipcode } = React.useContext(ZipCodeContext)
 
     const colors = ['red', 'yellow', 'green', 'blue']
 
-
-    function handleOnClick(t, map, coord) {
-        setShowingInfoWindow(true)
-        const { latLng } = coord
-        setModalCoordinates({
-            lat: latLng.lat(),
-            lng: latLng.lng()
-        })
-
+    //set Zipcode on map click
+    const handleOnClick = (zipCode) => () => {
+        setZipcode(parseInt(zipCode))
     }
+    //set null to current selected zipcode if modal is closed
+    const handleOnClose = () => setZipcode(() => null)
 
     return (
         <div>
@@ -42,15 +40,17 @@ function MapContainer(props) {
                         fillColor={colors[Math.floor(Math.random() * colors.length)]}
                         strokeWeight={0}
                         fillOpacity={0.35}
-                        onClick={handleOnClick}
+                        onClick={handleOnClick(data[0])}
                     >
 
                     </Polygon>
 
                 ))}
+
                 <InfoWindow
-                    position={modalCoordinates}
-                    visible={showingInfoWindow}
+                    position={selectedZipcode !== null ? zipCodeInfo[selectedZipcode].cityCenter : defaultCenter}
+                    visible={selectedZipcode !== null ? true : false}
+                    onClose={handleOnClose}
                 >
                     <CaseModal />
                 </InfoWindow>
