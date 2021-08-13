@@ -1,11 +1,11 @@
 import { Map, InfoWindow, GoogleApiWrapper, Polygon } from 'google-maps-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import geoData from '../Model/GEODATA'
 import CaseModal from './CaseModal'
 import ZipCodeContext from '../Contexts/zipCode'
 import zipCodeInfo from '../Model/ZIPCODES'
+import { getData } from '../Model/APIManager'
 function MapContainer(props) {
-
 
 
     const defaultCenter = {
@@ -14,6 +14,22 @@ function MapContainer(props) {
     }
     //Connects context
     const { selectedZipcode, setZipcode } = React.useContext(ZipCodeContext)
+    const [data, setData] = useState([
+        { date: "06/19/2021", cases: 5 },
+        { date: "06/12/2021", cases: 5 },
+        { date: "07/3/2021", cases: 13 },
+        { date: "07/17/2021", cases: 39 },
+        { date: "07/10/2021", cases: 13 },
+        { date: "07/24/2021", cases: 52 },
+        { date: "07/31/2021", cases: 71 }
+    ])
+
+    useEffect(() => {
+        getData(selectedZipcode)
+            .then((result) => setData(result))
+            .catch(() => console.log('error'))
+    }, [selectedZipcode])
+
 
     const colors = ['red', 'yellow', 'green', 'blue']
 
@@ -48,13 +64,13 @@ function MapContainer(props) {
                 ))}
 
                 <InfoWindow
-                
+
                     position={selectedZipcode !== null ? zipCodeInfo[selectedZipcode].cityCenter : defaultCenter}
                     visible={selectedZipcode !== null ? true : false}
                     onClose={handleOnClose}
-              
                 >
-                    <CaseModal selectedZipcode={selectedZipcode} />
+
+                    <CaseModal selectedZipcode={selectedZipcode} data={data} />
                 </InfoWindow>
 
             </Map>
