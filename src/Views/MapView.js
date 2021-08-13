@@ -4,8 +4,8 @@ import geoData from '../Model/GEODATA'
 import CaseModal from './CaseModal'
 import ZipCodeContext from '../Contexts/zipCode'
 import zipCodeInfo from '../Model/ZIPCODES'
-
 function MapContainer(props) {
+
 
 
     const defaultCenter = {
@@ -48,11 +48,13 @@ function MapContainer(props) {
                 ))}
 
                 <InfoWindow
+                
                     position={selectedZipcode !== null ? zipCodeInfo[selectedZipcode].cityCenter : defaultCenter}
                     visible={selectedZipcode !== null ? true : false}
                     onClose={handleOnClose}
+              
                 >
-                    <CaseModal />
+                    <CaseModal selectedZipcode={selectedZipcode} />
                 </InfoWindow>
 
             </Map>

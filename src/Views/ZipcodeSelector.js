@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import ZipCodeContext from '../Contexts/zipCode'
 export default function ZipcodeSelector(props) {
 
@@ -6,7 +6,7 @@ export default function ZipcodeSelector(props) {
 
 
     // changed useState to useContext to connect 2 components selector and mapview.
-    const {selectedZipcode, setZipcode} = React.useContext(ZipCodeContext)
+    const { selectedZipcode, setZipcode } = useContext(ZipCodeContext)
 
 
     // Run processSelection() on any rerender WHEN the value of selectedZipcode has changed

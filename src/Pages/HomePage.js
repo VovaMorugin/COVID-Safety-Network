@@ -6,8 +6,8 @@ import geoData from '../Model/GEODATA';
 
 
 export default function HomePage() {
-    
-   
+
+
     let zipcodes = Object.entries(geoData).map((data, index) =>
         data[0]
     );
@@ -16,9 +16,9 @@ export default function HomePage() {
 
         <div className="container">
             <div className="row">
-               
-                    <div className="col-2"><ZipcodeSelector data={zipcodes}/></div>
-                    <div className="col-10"><GoogleApiWrapper /></div>
+
+                <div className="col-2"><ZipcodeSelector data={zipcodes} /></div>
+                <div className="col-10"><GoogleApiWrapper /></div>
 
             </div>
         </div>
