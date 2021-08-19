@@ -4,7 +4,8 @@ import geoData from '../Model/GEODATA'
 import CaseModal from './CaseModal'
 import ZipCodeContext from '../Contexts/zipCode'
 import zipCodeInfo from '../Model/ZIPCODES'
-import { getData } from '../Model/APIManager'
+import { getDataForZipCode, getDataForHeatmap } from '../Model/APIManager'
+
 function MapContainer(props) {
 
 
@@ -14,29 +15,60 @@ function MapContainer(props) {
     }
     //Connects context
     const { selectedZipcode, setZipcode } = React.useContext(ZipCodeContext)
-    const [data, setData] = useState([
-        { date: "06/19/2021", cases: 5 },
-        { date: "06/12/2021", cases: 5 },
-        { date: "07/3/2021", cases: 13 },
-        { date: "07/17/2021", cases: 39 },
-        { date: "07/10/2021", cases: 13 },
-        { date: "07/24/2021", cases: 52 },
-        { date: "07/31/2021", cases: 71 }
-    ])
+    const [worstInfectionRate, setWorstInfectionRate] = React.useState(0)
+    const [infectionRatesByZipcode, setInfectionRatesByZipcode] = React.useState(null)
+    const [data, setData] = useState(null)
 
     useEffect(() => {
-        getData(selectedZipcode)
+        console.log('firstEffect')
+        getDataForZipCode(selectedZipcode)
             .then((result) => setData(result))
             .catch(() => console.log('error'))
     }, [selectedZipcode])
 
+    useEffect(() => {
+        console.log('secondEffect')
+        getDataForHeatmap()
+            .then((result) => {
+                setWorstInfectionRate(result.worstInfectionRate)
+                setInfectionRatesByZipcode(result.infectionRatesByZipcode)
+            })
+            .catch(() => console.log('error'))
+    }, [])
 
-    const colors = ['red', 'yellow', 'green', 'blue']
+    function getColor(zipCode) {
+        var infectionRate = null
+        if (infectionRatesByZipcode.hasOwnProperty(zipCode)) {
+            infectionRate = infectionRatesByZipcode[zipCode]
+        } else {
+            for (const key in infectionRatesByZipcode) {
+                if (key.includes(zipCode.toString())) {
+                    infectionRate = infectionRatesByZipcode[key]
+                    break
+                }
+            }
+        }
+
+        if (infectionRate < 0.2 * worstInfectionRate) {
+            return '#0bd474'
+        } else if (infectionRate < 0.4 * worstInfectionRate) {
+            return '#ffc900'
+        } else if (infectionRate < 0.6 * worstInfectionRate) {
+            return '#ff9600'
+        } else if (infectionRate < 0.8 * worstInfectionRate) {
+            return '#d9002c'
+        } else if (infectionRate > 0.8 * worstInfectionRate) {
+            return '#790019'
+        }
+
+    }
+
 
     //set Zipcode on map click
     const handleOnClick = (zipCode) => () => {
         setZipcode(parseInt(zipCode))
     }
+
     //set null to current selected zipcode if modal is closed
     const handleOnClose = () => setZipcode(() => null)
 
@@ -44,16 +76,17 @@ function MapContainer(props) {
         <div>
             <Map
                 google={props.google}
+                style={{ width: '80%', height: '80%' }}
                 zoom={10}
                 initialCenter={defaultCenter}
             >
-                {Object.entries(geoData).map((data, index) => (
+                {infectionRatesByZipcode !== null && Object.entries(geoData).map((data, index) => (
                     <Polygon
                         key={index}
                         paths={data[1]}
                         strokeOpacity={0.8}
                         strokeWeight={2}
-                        fillColor={colors[Math.floor(Math.random() * colors.length)]}
+                        fillColor={getColor(data[0])}
                         strokeWeight={0}
                         fillOpacity={0.35}
                         onClick={handleOnClick(data[0])}
@@ -63,7 +96,7 @@ function MapContainer(props) {
 
                 ))}
 
-                <InfoWindow
+                {data !== null && <InfoWindow
 
                     position={selectedZipcode !== null ? zipCodeInfo[selectedZipcode].cityCenter : defaultCenter}
                     visible={selectedZipcode !== null ? true : false}
@@ -71,7 +104,7 @@ function MapContainer(props) {
                 >
 
                     <CaseModal selectedZipcode={selectedZipcode} data={data} />
-                </InfoWindow>
+                </InfoWindow>}
 
             </Map>
 

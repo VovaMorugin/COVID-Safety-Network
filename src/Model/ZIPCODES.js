@@ -317,10 +317,6 @@ const zipCodeInfo = {
         cityName: 'San Diego',
         cityCenter: { lat: 32.86941, lng: -117.12126 },
     },
-    92147: {
-        cityName: 'San Diego',
-        cityCenter: { lat: 32.72940, lng: -117.15910 },
-    },
     92154: {
         cityName: 'San Diego',
         cityCenter: { lat: 32.56785, lng: -116.99026 },
@@ -372,10 +368,6 @@ const zipCodeInfo = {
     92131: {
         cityName: 'San Diego',
         cityCenter: { lat: 32.91539, lng: -117.08356 },
-    },
-    92132: {
-        cityName: 'San Diego',
-        cityCenter: { lat: 32.71450, lng: -117.15720 },
     },
     92134: {
         cityName: 'San Diego',

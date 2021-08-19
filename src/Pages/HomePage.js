@@ -1,9 +1,7 @@
 import * as React from 'react'
 import GoogleApiWrapper from '../Views/MapView'
 import ZipcodeSelector from '../Views/ZipcodeSelector'
-
 import geoData from '../Model/GEODATA';
-
 
 export default function HomePage() {
 
@@ -14,7 +12,8 @@ export default function HomePage() {
 
     return (
 
-        <div className="container">
+        <div className="container-fluid" >
+
             <div className="row">
 
                 <div className="col-2"><ZipcodeSelector data={zipcodes} /></div>
