@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import ZipCodeContext from '../Contexts/zipCode'
 import DataManager from '../Model/DataManager';
-import { getDataForZipCode } from '../Model/APIManager'
+import { getLatestDataForAllZipCodes } from '../Model/APIManager'
 
 
 export default function ZipcodeSelector(props) {
@@ -22,11 +22,10 @@ export default function ZipcodeSelector(props) {
 
     // NEW: perhaps modify this - provide fetch data so can store and pass it into DataManager
     useEffect(() => {
-        //console.log('firstEffect')
-        getDataForZipCode(selectedZipcode)
+        getLatestDataForAllZipCodes()
             .then((result) => setData(result))
             .catch(() => console.log('error'))
-    }, [selectedZipcode])
+    }, [])
 
 
     // Check to see if we entered a zipcode, before changing the state
@@ -50,7 +49,7 @@ export default function ZipcodeSelector(props) {
         }
 
         // NEW: added DataManager object
-        let dataManager = new DataManager(selectedZipcode, data) ;
+        let dataManager = new DataManager(selectedZipcode, data);
         dataManager.describe();
         dataManager.computeRelativeRanking(91914, 91913);
         dataManager.computePercentile();

@@ -10,6 +10,7 @@ Issues to work through:
 
 class DataManager {
     constructor(selectedZipcode, data) {
+        console.log(data)
         this.selectedZipcode = selectedZipcode;
         this.data = data;
 

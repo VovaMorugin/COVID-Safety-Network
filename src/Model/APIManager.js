@@ -10,23 +10,6 @@ const defaultParams = {
 const startingMonth = '6'
 const API_URL = 'https://gis-public.sandiegocounty.gov/arcgis/rest/services/Hosted/COVID19_CaseRateData/FeatureServer/1/query'
 
-export const getDataForZipCode = (selectedZipcode) => {
-    return axios.get(API_URL, {
-        params: {
-            ...defaultParams,
-            where: `current_date_range >= '${startingMonth}' AND zip_code like '%${selectedZipcode}%'`
-        }
-    })
-        .then(resp => {
-            let cases = []
-            for (const data of resp.data.features) {
-                const rawData = data['attributes']['current_date_range'].split('-')[1].split('/').slice(0, 2).join('/')
-                const number = data['attributes']['positive_tests_in_7_day_testing']
-                cases.push({ date: rawData, cases: number })
-            }
-            return cases.sort(sortDates('custom'))
-        })
-}
 
 
 const getCurrentDateRange = () => {
@@ -36,9 +19,11 @@ const getCurrentDateRange = () => {
             where: `current_date_range >= '${startingMonth}' AND zip_code = '92113'`
         }
     })
-        .then((response) => response.data.features.sort(sortDates('standard')))
+        .then((response) => {
+            const sortedDates = response.data.features.sort(sortDates('standard'))
+            return sortedDates[sortedDates.length - 1]['attributes']['current_date_range']
+        })
 }
-
 
 const getInfectionRatesInfo = (range) => {
     return axios.get(API_URL, {
@@ -72,10 +57,44 @@ const getInfectionRatesInfo = (range) => {
         })
 }
 
+
+export const getDataForZipCode = (selectedZipcode) => {
+    return axios.get(API_URL, {
+        params: {
+            ...defaultParams,
+            where: `current_date_range >= '${startingMonth}' AND zip_code like '%${selectedZipcode}%'`
+        }
+    })
+        .then(resp => {
+            let cases = []
+            for (const data of resp.data.features) {
+                const rawData = data['attributes']['current_date_range'].split('-')[1].split('/').slice(0, 2).join('/')
+                const number = data['attributes']['positive_tests_in_7_day_testing']
+                cases.push({ date: rawData, cases: number })
+            }
+            return cases.sort(sortDates('custom'))
+        })
+}
+
+
 export const getDataForHeatmap = () => {
     return getCurrentDateRange()
-        .then((data) => getInfectionRatesInfo(data[data.length - 1]['attributes']['current_date_range']))
+        .then((range) => getInfectionRatesInfo(range))
 }
 
 
 
+
+export const getLatestDataForAllZipCodes = () => {
+    return getCurrentDateRange()
+        .then((range) => {
+            return axios.get(API_URL, {
+                params: {
+                    ...defaultParams,
+                    where: `current_date_range = '${range}'`,
+
+                }
+            })
+                .then((response) => response.data.features)
+        })
+}
