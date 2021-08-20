@@ -1,5 +1,9 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import ZipCodeContext from '../Contexts/zipCode'
+import DataManager from '../Model/DataManager';
+import { getDataForZipCode } from '../Model/APIManager'
+
+
 export default function ZipcodeSelector(props) {
 
     const possibilities = props.data;
@@ -7,12 +11,22 @@ export default function ZipcodeSelector(props) {
 
     // changed useState to useContext to connect 2 components selector and mapview.
     const { selectedZipcode, setZipcode } = useContext(ZipCodeContext)
+    const [data, setData] = useState(null)
+
 
 
     // Run processSelection() on any rerender WHEN the value of selectedZipcode has changed
     useEffect(() => {
         processSelection();
     }, [selectedZipcode]);
+
+    // NEW: perhaps modify this - provide fetch data so can store and pass it into DataManager
+    useEffect(() => {
+        //console.log('firstEffect')
+        getDataForZipCode(selectedZipcode)
+            .then((result) => setData(result))
+            .catch(() => console.log('error'))
+    }, [selectedZipcode])
 
 
     // Check to see if we entered a zipcode, before changing the state
@@ -31,14 +45,18 @@ export default function ZipcodeSelector(props) {
     // Do something with the selection
     const processSelection = () => {
 
-        let data = selectedZipcode;
-
-        if (data === null) {
+        if (selectedZipcode === null) {
             return;
         }
 
-        //Perform something meaningful here - maybe return data out of this component
-        // alert("Selected zipcode: " + data);
+        // NEW: added DataManager object
+        let dataManager = new DataManager(selectedZipcode, data) ;
+        dataManager.describe();
+        dataManager.computeRelativeRanking(91914, 91913);
+        dataManager.computePercentile();
+        dataManager.computeRanking();
+
+
     }
 
 
@@ -49,7 +67,7 @@ export default function ZipcodeSelector(props) {
         <div style={{ marginTop: '100px' }}>
 
 
-            <select className="ui search dropdown"
+            <select className="ui fluid search dropdown"
                 onInput={(e) => validateZipcode(e.target.value)} >
 
                 <option value="">Enter in zip code:</option>
