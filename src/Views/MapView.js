@@ -6,8 +6,9 @@ import ZipCodeContext from '../Contexts/zipCode'
 import zipCodeInfo from '../Model/ZIPCODES'
 import { getDataForZipCode, getDataForHeatmap } from '../Model/APIManager'
 
-function MapContainer(props) {
 
+
+function MapContainer(props) {
 
     const defaultCenter = {
         lat: 33.06997875622593,
@@ -20,7 +21,12 @@ function MapContainer(props) {
     const [data, setData] = useState(null)
 
     useEffect(() => {
-        console.log('firstEffect')
+
+        
+
+
+          
+        
         getDataForZipCode(selectedZipcode)
             .then((result) => setData(result))
             .catch(() => console.log('error'))
@@ -78,6 +84,7 @@ function MapContainer(props) {
                 google={props.google}
                 style={{ width: '80%', height: '80%' }}
                 zoom={10}
+                
                 initialCenter={defaultCenter}
             >
                 {infectionRatesByZipcode !== null && Object.entries(geoData).map((data, index) => (
@@ -103,7 +110,7 @@ function MapContainer(props) {
                     onClose={handleOnClose}
                 >
 
-                    <CaseModal selectedZipcode={selectedZipcode} data={data} />
+                    <CaseModal data={data} />
                 </InfoWindow>}
 
             </Map>
@@ -114,5 +121,5 @@ function MapContainer(props) {
 }
 
 export default GoogleApiWrapper({
-    apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
+    apiKey: "AIzaSyAEzJ6VzdITMwC_iIJyp9Kt0IWKrzw7H60"
 })(MapContainer)

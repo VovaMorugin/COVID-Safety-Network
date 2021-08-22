@@ -17,10 +17,11 @@ export default function App() {
 
     const [selectedZipcode, setZipcode] = React.useState(null)
     return (
-        <AuthProvider>
+        <ZipCodeContext.Provider value={{ selectedZipcode, setZipcode }}>
+            <AuthProvider>
 
-            <Router>
-                <ZipCodeContext.Provider value={{ selectedZipcode, setZipcode }}>
+                <Router>
+
                     <Route exact path={['/', '/compare']} component={Header} />
                     <Route exact path='/' component={HomePage} />
                     <Route exact path='/compare' component={ComparisonPage} />
@@ -34,9 +35,9 @@ export default function App() {
                         </div>
                     </Container>
 
-                </ZipCodeContext.Provider>
-            </Router>
-        </AuthProvider>
 
+                </Router>
+            </AuthProvider>
+        </ZipCodeContext.Provider>
     )
 }

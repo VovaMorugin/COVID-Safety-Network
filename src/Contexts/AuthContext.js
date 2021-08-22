@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react"
-import { auth } from "../firebase"
+import { auth, db } from "../firebase"
 
 const AuthContext = React.createContext()
 
@@ -10,6 +10,8 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
+  const [userId, setUserId] = useState(null)
+  const [userZipCodes, setUserZipCodes] = useState(null)
 
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password)
@@ -35,23 +37,89 @@ export function AuthProvider({ children }) {
     return currentUser.updatePassword(password)
   }
 
+
+  function getUserId(user) {
+
+    const dbRef = db.ref('users')
+
+    dbRef.on('value', (snapshot) => {
+
+      for (let id in snapshot.val()) {
+        const dbUser = snapshot.val()[id]
+        if (dbUser.email == user.email) {
+          setUserId(id)
+          console.log(id, 'exists')
+          return
+        }
+      }
+
+      const key = dbRef.push({
+        email: user.email,
+      }).getKey()
+      console.log(key, 'new user')
+
+    })
+  }
+
+  function addZipCode(zipCode) {
+
+    if (zipCode !== null && userId !== null) {
+      const dbRef = db.ref(`users/${userId}/zipCodes`)
+      dbRef.push(zipCode)
+    }
+  }
+
+  function deleteZipCode(zipCode) {
+    if (zipCode !== null && userId !== null) {
+      const dbRef = db.ref(`users/${userId}/zipCodes`)
+
+      db.ref(`users/${userId}/zipCodes`).on('value', (snapshot) => {
+
+        for (let id in snapshot.val()) {
+          const dbZipCode = snapshot.val()[id]
+          if (dbZipCode == zipCode) {
+            dbRef.child(id).remove()
+          }
+        }
+      })
+    }
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user)
+      if (user != null) {
+        getUserId(user)
+      }
       setLoading(false)
+
     })
 
     return unsubscribe
   }, [])
 
+  useEffect(() => {
+    if (userId != null) {
+      const dbRef = db.ref(`users/${userId}/zipCodes/`)
+      dbRef.on('value', (snapshot) => {
+        setUserZipCodes(snapshot.val())
+
+      })
+    }
+  }, [userId])
+
+
   const value = {
     currentUser,
+    userZipCodes,
     login,
     signup,
     logout,
     resetPassword,
     updateEmail,
-    updatePassword
+    updatePassword,
+    addZipCode,
+    deleteZipCode,
   }
 
   return (

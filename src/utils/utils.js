@@ -1,4 +1,4 @@
-export const sortDates = (type) => (a,b) => {
+export const sortDates = (type) => (a, b) => {
 
     let dateA = type === 'standard' ? a['attributes']['current_date_range'].split('-')[1].split('/') : a.date.split('/')
     let dateB = type === 'standard' ? b['attributes']['current_date_range'].split('-')[1].split('/') : b.date.split('/')

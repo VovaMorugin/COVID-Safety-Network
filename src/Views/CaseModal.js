@@ -8,9 +8,11 @@ import {
     Legend
 } from 'recharts'
 
-export default function CaseModal({ data }) {
-    return (
 
+export default function CaseModal({ data }) {
+
+
+    return (
         <LineChart
             width={500}
             height={300}
@@ -30,7 +32,6 @@ export default function CaseModal({ data }) {
             <Line type="monotone" dataKey="cases" stroke="#82ca9d" activeDot={{ r: 8 }} />
 
         </LineChart>
-
     )
 
 }
