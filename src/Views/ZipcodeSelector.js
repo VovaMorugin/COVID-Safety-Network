@@ -10,7 +10,7 @@ export default function ZipcodeSelector(props) {
 
 
     // changed useState to useContext to connect 2 components selector and mapview.
-    const { selectedZipcode, setZipcode } = useContext(ZipCodeContext)
+    const {selectedZipcode, setZipcode} = useContext(ZipCodeContext)
     const [data, setData] = useState(null)
 
 
@@ -43,19 +43,21 @@ export default function ZipcodeSelector(props) {
 
     // Do something with the selection
     const processSelection = () => {
-
         if (selectedZipcode === null) {
             return;
         }
 
-        // NEW: added DataManager object
+        // Data processing 
         let dataManager = new DataManager(selectedZipcode, data);
+
         dataManager.describe();
         dataManager.computeRelativeRanking(91914, 91913);
         dataManager.computePercentile();
         dataManager.computeRanking();
-
-
+        dataManager.populationForZipcode();
+        dataManager.positivityRateIncreasing();
+        dataManager.averagePositiveCaseRate();
+        dataManager.lastWeekAveragePositiveCaseRate();
     }
 
 
@@ -65,11 +67,11 @@ export default function ZipcodeSelector(props) {
     return (
         <div style={{ marginTop: '100px' }}>
 
+        Enter in zipcode:
 
             <select className="ui fluid search dropdown"
-                onInput={(e) => validateZipcode(e.target.value)} >
-
-                <option value="">Enter in zip code:</option>
+                onInput={(e) => validateZipcode(e.target.value)}
+                value={selectedZipcode} >
 
                 {possibilities.map((zipcode, index) =>
                     <option key={index}>

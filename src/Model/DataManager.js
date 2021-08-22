@@ -1,16 +1,12 @@
 import zipCodeInfo from '../Model/ZIPCODES';
 
 /*
-Issues to work through:
-    - Why does API call only fetch data for 8 zipcodes - even though there are 105?
-    - In the exposure object, does the numberOfCases key match the value for zipcodes (is this key-value pair alligned correctly)?
-    - Also confirm what data did I actually pass into the constructor - this week or last month's data?
+    Generate a data dictionary of these metrics
 */
-
 
 class DataManager {
     constructor(selectedZipcode, data) {
-        console.log(data)
+        //console.log(data)
         this.selectedZipcode = selectedZipcode;
         this.data = data;
 
@@ -22,10 +18,13 @@ class DataManager {
     }
 
     structureData() {
-        //console.log(this.data);
+        console.log(this.data);
 
         let data = this.data;
-        var numberOfCases = data.map((object) =>  object.cases);
+        var numberOfCases = data.map((object) =>  object['attributes']['positive_tests_in_7_day_testing']);
+        var citizenCount = data.map((object) =>  object['attributes']['population']);
+        var caseRate = data.map((object) =>  object['attributes']['f7_day_average_case_rate']);
+        var lastWeekCaseRate = data.map((object) =>  object['attributes']['previous_week_case_rate']);
         var zipcodes = Object.keys(zipCodeInfo);
 
         //Error handling
@@ -39,15 +38,28 @@ class DataManager {
         console.log("Number of total zipcodes: " + zipcodes.length);
 
         this.numberOfCases = numberOfCases;
-        this.zipcodes = this.zipcodes;
+        this.zipcodes = zipcodes;
 
 
         // ISSUE: confirm this is correct - Building exposure data object 
         var exposureRate = {};
         zipcodes.forEach((key, i) => exposureRate[key] = numberOfCases[i]);
 
+        var population = {};
+        zipcodes.forEach((key, i) => population[key] = citizenCount[i]);
+
+        var caseRates = {};
+        zipcodes.forEach((key, i) => caseRates[key] = caseRate[i]);
+
+        var lastWeekCaseRates = {};
+        zipcodes.forEach((key, i) => lastWeekCaseRates[key] = lastWeekCaseRate[i]);
+
         this.exposureRate = exposureRate;
-        console.log(exposureRate);
+        this.population = population;
+        this.caseRates = caseRates;
+        this.lastWeekCaseRates = lastWeekCaseRates;
+
+        //console.log(exposureRate);
     }
 
 
@@ -74,7 +86,24 @@ class DataManager {
             }
         }
 
-        console.log("rankingCounter: " + rankingCounter);
+        var suffix = ""
+        switch(rankingCounter) {
+            case 1:
+                suffix = "st";
+                break;
+            case 2:
+                suffix = "nd";
+                break;
+            case 3:
+                suffix = "rd";
+                break;
+            default:
+                suffix = "th";
+                break;
+        }
+
+
+        console.log("ranking: " + rankingCounter + suffix + " out of " + this.numberOfCases.length);
         return rankingCounter;
 
     }
@@ -119,13 +148,53 @@ class DataManager {
         return percentileString;
     }
 
-    computeChangeSinceLastWeek() {
+    populationForZipcode() {
+        const zipcodePopulation = this.population[this.selectedZipcode];
 
+        console.log("population for zipcode is: " + zipcodePopulation);
+        return this.zipcodePopulation;
+    }
+
+    positivityRateIncreasing() {
+        const caseRate = this.caseRates[this.selectedZipcode];
+        const lastWeekcaseRate = this.lastWeekCaseRates[this.selectedZipcode];
+
+        if (caseRate === null || caseRate === undefined || lastWeekcaseRate === null || lastWeekcaseRate === undefined) {
+            return;
+        }
+
+        const comparison = caseRate > lastWeekcaseRate;
+        const comparisonString = comparison === true ? "Increasing rate" : "Decreasing rate";
+
+        console.log(comparisonString);
+        return comparisonString;
     }
 
 
-    computeChangeSinceLastMonth() {
+    averagePositiveCaseRate() {
+        const caseRate = this.caseRates[this.selectedZipcode];
 
+        if (caseRate === null || caseRate === undefined) {
+            return;
+        }
+
+        const caseRateString = "" + this.round(caseRate) + "% positive cases rate this week";
+
+        console.log(caseRateString);
+        return caseRateString;
+    }
+
+    lastWeekAveragePositiveCaseRate() {
+        const lastWeekcaseRate = this.lastWeekCaseRates[this.selectedZipcode];
+
+        if (lastWeekcaseRate === null || lastWeekcaseRate === undefined) {
+            return;
+        }
+
+        const lastWeekcaseRateString = "" + this.round(lastWeekcaseRate) + "% positive cases rate last week";
+
+        console.log(lastWeekcaseRateString);
+        return lastWeekcaseRateString;
     }
 
 
@@ -151,9 +220,16 @@ class DataManager {
             }
         }
     
-        var pct = (L + (0.5 * S)) / N
+        var pct = (L + (0.5 * S)) / N;
+
+        var roundedPercent = this.round(pct);
     
-        return pct
+        return roundedPercent;
+    }
+
+    round(num) {
+        var m = Number((Math.abs(num) * 1000).toPrecision(15));
+        return Math.round(m) / 1000 * Math.sign(num);
     }
 
 
