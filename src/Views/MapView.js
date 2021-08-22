@@ -20,20 +20,13 @@ function MapContainer(props) {
     const [infectionRatesByZipcode, setInfectionRatesByZipcode] = React.useState(null)
     const [data, setData] = useState(null)
 
-    useEffect(() => {
-
-        
-
-
-          
-        
+    useEffect(() => {    
         getDataForZipCode(selectedZipcode)
             .then((result) => setData(result))
             .catch(() => console.log('error'))
     }, [selectedZipcode])
 
     useEffect(() => {
-        console.log('secondEffect')
         getDataForHeatmap()
             .then((result) => {
                 setWorstInfectionRate(result.worstInfectionRate)
@@ -122,4 +115,5 @@ function MapContainer(props) {
 
 export default GoogleApiWrapper({
     apiKey: "AIzaSyAEzJ6VzdITMwC_iIJyp9Kt0IWKrzw7H60"
+    // apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 })(MapContainer)
