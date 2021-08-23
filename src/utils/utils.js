@@ -1,3 +1,5 @@
+import { getDataForZipCode } from '../Model/APIManager'
+
 export const sortDates = (type) => (a, b) => {
 
     let dateA = type === 'standard' ? a['attributes']['current_date_range'].split('-')[1].split('/') : a.date.split('/')
@@ -12,4 +14,22 @@ export const sortDates = (type) => (a, b) => {
     }
 
     return dateA.join() > dateB.join() ? 1 : dateA.join() < dateB.join() ? -1 : 0
+}
+
+export const getCombinedData = async (firstZipCode, secondZipCode) => {
+    let firstData = null
+    let secondData = null
+    let result = []
+    await getDataForZipCode(firstZipCode)
+        .then((result) => firstData = result)
+    await getDataForZipCode(secondZipCode)
+        .then((result) => secondData = result)
+
+    for (const index in firstData) {
+
+        result.push({ date: firstData[index]['date'], [firstZipCode]: firstData[index]['cases'], [secondZipCode]: secondData[index]['cases'] })
+    }
+
+    return result
+
 }

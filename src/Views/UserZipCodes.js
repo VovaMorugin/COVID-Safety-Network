@@ -5,13 +5,12 @@ import ZipCodeContext from '../Contexts/zipCode'
 
 export default function UserZipCodes() {
     const { selectedZipcode, setZipcode } = useContext(ZipCodeContext)
-    const { userZipCodes, deleteZipCode, addZipCode } = useAuth()
+    const { userZipCodes, deleteZipCode, addZipCode, currentUser } = useAuth()
     const [alreadySaved, setAlreadySaved] = useState(false)
 
     useEffect(() => {
-        console.log(userZipCodes)
         for (const id in userZipCodes) {
-            if (userZipCodes[id] == selectedZipcode) {
+            if (userZipCodes[id] === selectedZipcode) {
                 setAlreadySaved(true)
                 break
             }
@@ -23,16 +22,21 @@ export default function UserZipCodes() {
     const handleOnClick = () => {
         addZipCode(selectedZipcode)
     }
+
+    const handleDelete = (key) => {
+        deleteZipCode(key)
+    }
     return (
         <div>
-            {selectedZipcode != null && <Button variant="primary" disabled={alreadySaved} onClick={handleOnClick}>Save selected zipcode ({selectedZipcode})</Button>}
+            {currentUser != null && selectedZipcode != null &&
+                <Button variant="primary" disabled={alreadySaved} onClick={handleOnClick}>Save selected zipcode ({selectedZipcode})</Button>}
             {userZipCodes != null && Object.keys(userZipCodes).length > 0 ?
                 <div> Saved Zip codes:
                     <ListGroup>
                         {Object.keys(userZipCodes).map(function (key, index) {
                             return <ListGroup.Item key={index}>
                                 <Button style={{ 'width': '90%' }} variant="light" size="sm" onClick={() => setZipcode(userZipCodes[key])}>{userZipCodes[key]}</Button>
-                                <Button style={{ 'width': '10%' }} className="float-end" size="sm" variant="outline-danger" onClick={() => deleteZipCode(userZipCodes[key])}>x</Button>
+                                <Button style={{ 'width': '10%' }} className="float-end" size="sm" variant="outline-danger" onClick={() => handleDelete(key)}>x</Button>
                             </ListGroup.Item>
 
                         })}

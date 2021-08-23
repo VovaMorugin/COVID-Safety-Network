@@ -20,20 +20,13 @@ function MapContainer(props) {
     const [infectionRatesByZipcode, setInfectionRatesByZipcode] = React.useState(null)
     const [data, setData] = useState(null)
 
-    useEffect(() => {
-
-        
-
-
-          
-        
+    useEffect(() => {    
         getDataForZipCode(selectedZipcode)
             .then((result) => setData(result))
             .catch(() => console.log('error'))
     }, [selectedZipcode])
 
     useEffect(() => {
-        console.log('secondEffect')
         getDataForHeatmap()
             .then((result) => {
                 setWorstInfectionRate(result.worstInfectionRate)
@@ -91,8 +84,6 @@ function MapContainer(props) {
                     <Polygon
                         key={index}
                         paths={data[1]}
-                        strokeOpacity={0.8}
-                        strokeWeight={2}
                         fillColor={getColor(data[0])}
                         strokeWeight={0}
                         fillOpacity={0.35}
@@ -122,4 +113,5 @@ function MapContainer(props) {
 
 export default GoogleApiWrapper({
     apiKey: "AIzaSyAEzJ6VzdITMwC_iIJyp9Kt0IWKrzw7H60"
+    // apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 })(MapContainer)

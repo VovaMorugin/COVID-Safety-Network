@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from 'react';
 import ZipCodeContext from '../Contexts/zipCode'
 import DataManager from '../Model/DataManager';
 import { getLatestDataForAllZipCodes } from '../Model/APIManager'
-import ComparisonGraph from '../Views/ComparisonGraph';
+import ComparisonTable from '../Views/ComparisonTable';
 
 
 export default function ZipcodeSelector(props) {
@@ -81,7 +81,7 @@ export default function ZipcodeSelector(props) {
 
             </select>
 
-            <ComparisonGraph zipcode={selectedZipcode} data ={data} />
+            <ComparisonTable zipcode={selectedZipcode} data ={data} />
 
         </div>
     )

@@ -46,42 +46,30 @@ export function AuthProvider({ children }) {
 
       for (let id in snapshot.val()) {
         const dbUser = snapshot.val()[id]
-        if (dbUser.email == user.email) {
+        if (dbUser.email === user.email) {
           setUserId(id)
-          console.log(id, 'exists')
           return
         }
       }
 
-      const key = dbRef.push({
+      dbRef.push({
         email: user.email,
       }).getKey()
-      console.log(key, 'new user')
+
 
     })
   }
 
   function addZipCode(zipCode) {
-
     if (zipCode !== null && userId !== null) {
       const dbRef = db.ref(`users/${userId}/zipCodes`)
       dbRef.push(zipCode)
     }
   }
 
-  function deleteZipCode(zipCode) {
-    if (zipCode !== null && userId !== null) {
-      const dbRef = db.ref(`users/${userId}/zipCodes`)
-
-      db.ref(`users/${userId}/zipCodes`).on('value', (snapshot) => {
-
-        for (let id in snapshot.val()) {
-          const dbZipCode = snapshot.val()[id]
-          if (dbZipCode == zipCode) {
-            dbRef.child(id).remove()
-          }
-        }
-      })
+  function deleteZipCode(key) {
+    if (key !== null && userId !== null) {
+      db.ref(`users/${userId}/zipCodes/${key}`).remove()
     }
   }
 
@@ -103,7 +91,6 @@ export function AuthProvider({ children }) {
       const dbRef = db.ref(`users/${userId}/zipCodes/`)
       dbRef.on('value', (snapshot) => {
         setUserZipCodes(snapshot.val())
-
       })
     }
   }, [userId])
