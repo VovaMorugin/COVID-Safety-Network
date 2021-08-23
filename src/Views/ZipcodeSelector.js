@@ -2,6 +2,7 @@ import { useEffect, useContext, useState } from 'react';
 import ZipCodeContext from '../Contexts/zipCode'
 import DataManager from '../Model/DataManager';
 import { getLatestDataForAllZipCodes } from '../Model/APIManager'
+import ComparisonGraph from '../Views/ComparisonGraph';
 
 
 export default function ZipcodeSelector(props) {
@@ -47,17 +48,17 @@ export default function ZipcodeSelector(props) {
             return;
         }
 
-        // Data processing 
-        let dataManager = new DataManager(selectedZipcode, data);
+        // // Data processing 
+        // let dataManager = new DataManager(selectedZipcode, data);
 
-        dataManager.describe();
-        dataManager.computeRelativeRanking(91914, 91913);
-        dataManager.computePercentile();
-        dataManager.computeRanking();
-        dataManager.populationForZipcode();
-        dataManager.positivityRateIncreasing();
-        dataManager.averagePositiveCaseRate();
-        dataManager.lastWeekAveragePositiveCaseRate();
+        // dataManager.describe();
+        // dataManager.computeRelativeRanking(selectedZipcode, 91913);
+        // dataManager.computePercentile();
+        // dataManager.computeRanking();
+        // dataManager.populationForZipcode();
+        // dataManager.positivityRateIncreasing();
+        // dataManager.averagePositiveCaseRate();
+        // dataManager.lastWeekAveragePositiveCaseRate();
     }
 
 
@@ -65,7 +66,7 @@ export default function ZipcodeSelector(props) {
 
 
     return (
-        <div style={{ marginTop: '100px' }}>
+        <div style={{ marginTop: '40px' }}>
 
         Enter in zipcode:
 
@@ -79,6 +80,8 @@ export default function ZipcodeSelector(props) {
                     </option>)}
 
             </select>
+
+            <ComparisonGraph zipcode={selectedZipcode} data ={data} />
 
         </div>
     )

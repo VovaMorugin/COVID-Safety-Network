@@ -1,12 +1,11 @@
 import zipCodeInfo from '../Model/ZIPCODES';
 
 /*
-    Generate a data dictionary of these metrics
+    Generate a data dictionary of these metrics - to explain what they mean
 */
 
 class DataManager {
     constructor(selectedZipcode, data) {
-        //console.log(data)
         this.selectedZipcode = selectedZipcode;
         this.data = data;
 
@@ -25,6 +24,7 @@ class DataManager {
         var citizenCount = data.map((object) =>  object['attributes']['population']);
         var caseRate = data.map((object) =>  object['attributes']['f7_day_average_case_rate']);
         var lastWeekCaseRate = data.map((object) =>  object['attributes']['previous_week_case_rate']);
+
         var zipcodes = Object.keys(zipCodeInfo);
 
         //Error handling
@@ -33,15 +33,7 @@ class DataManager {
         }
 
 
-        // ISSUE: notice this only returns 8
-        console.log("Number of cases passed in: " + numberOfCases.length);
-        console.log("Number of total zipcodes: " + zipcodes.length);
-
-        this.numberOfCases = numberOfCases;
-        this.zipcodes = zipcodes;
-
-
-        // ISSUE: confirm this is correct - Building exposure data object 
+        // Build dictionaries
         var exposureRate = {};
         zipcodes.forEach((key, i) => exposureRate[key] = numberOfCases[i]);
 
@@ -53,6 +45,11 @@ class DataManager {
 
         var lastWeekCaseRates = {};
         zipcodes.forEach((key, i) => lastWeekCaseRates[key] = lastWeekCaseRate[i]);
+
+
+        // Save results to global scope
+        this.numberOfCases = numberOfCases;
+        this.zipcodes = zipcodes;
 
         this.exposureRate = exposureRate;
         this.population = population;
@@ -81,7 +78,7 @@ class DataManager {
         for(var i = 0; i < numberOfCases.length; i++) {
             const caseload = numberOfCases[i];
 
-            if (zipcodeCases > caseload) {
+            if (zipcodeCases >= caseload) {
                 rankingCounter++;
             }
         }
@@ -102,9 +99,9 @@ class DataManager {
                 break;
         }
 
-
-        console.log("ranking: " + rankingCounter + suffix + " out of " + this.numberOfCases.length);
-        return rankingCounter;
+        const rankingString = "" + rankingCounter + suffix + " out of " + this.numberOfCases.length;
+        console.log(rankingString);
+        return rankingString;
 
     }
 
@@ -121,9 +118,9 @@ class DataManager {
         const zipcodeTwoCases = exposureRate[zipcodeTwo];
 
         if (zipcodeOneCases  > zipcodeTwoCases) {
-            result = ("" + zipcodeOne + " has a higher COVID-19 exposure rate");
+            result = ("" + zipcodeOne + " has a higher COVID-19 exposure rate than " + zipcodeTwo);
         } else {
-            result = ("" + zipcodeTwo + " has a higher COVID-19 exposure rate");
+            result = ("" + zipcodeOne + " has a lower COVID-19 exposure rate than " + zipcodeTwo);
         }
 
         console.log(result);
@@ -134,7 +131,6 @@ class DataManager {
         const zipcode = this.selectedZipcode;
         const zipcodeCases = this.exposureRate[zipcode];
 
-
         if (zipcode === null || zipcode === undefined) {
             return;
         }
@@ -142,7 +138,7 @@ class DataManager {
         const dataset = this.numberOfCases.sort();
 
         const percentile = this.percentRank(dataset, zipcodeCases);
-        const percentileString = "" + percentile * 100 + "%";
+        const percentileString = "" + this.round(percentile) * 100 + "%";
 
         console.log(zipcode + " has more cases than " + percentileString + " of zipcodes.");
         return percentileString;
@@ -198,7 +194,7 @@ class DataManager {
     }
 
 
-    // Helper method - found here: https://gist.github.com/IceCreamYou/6ffa1b18c4c8f6aeaad2
+    // Helper methods 
     percentRank(array, n) {
         var L = 0;
         var S = 0;
@@ -228,8 +224,9 @@ class DataManager {
     }
 
     round(num) {
-        var m = Number((Math.abs(num) * 1000).toPrecision(15));
-        return Math.round(m) / 1000 * Math.sign(num);
+        var m = Number((Math.abs(num) * 100).toPrecision(15));
+        var transformation = Math.round(m) / 100 * Math.sign(num);
+        return transformation.toFixed(3);
     }
 
 
