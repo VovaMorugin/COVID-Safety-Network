@@ -10,7 +10,7 @@ export default function UserZipCodes() {
 
     useEffect(() => {
         for (const id in userZipCodes) {
-            if (userZipCodes[id] == selectedZipcode) {
+            if (userZipCodes[id] === selectedZipcode) {
                 setAlreadySaved(true)
                 break
             }

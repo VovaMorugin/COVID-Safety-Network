@@ -13,7 +13,14 @@ import Login from './Login'
 import { AuthProvider } from '../Contexts/AuthContext'
 import ForgotPassword from './ForgotPassword'
 import UpdateProfile from './UpdateProfile'
+import geoData from '../Model/GEODATA';
+
 export default function App() {
+
+
+    let zipcodes = Object.entries(geoData).map((data, index) =>
+        data[0]
+    );
 
     const [selectedZipcode, setZipcode] = React.useState(null)
     return (
@@ -23,8 +30,8 @@ export default function App() {
                 <Router>
 
                     <Route exact path={['/', '/compare']} component={Header} />
-                    <Route exact path='/' component={HomePage} />
-                    <Route exact path='/compare' component={ComparisonPage} />
+                    <Route exact path='/'><HomePage zipcodes={zipcodes} /></Route>
+                    <Route exact path='/compare'><ComparisonPage data={zipcodes} /></Route>
 
                     <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
                         <div className='w-100' style={{ maxWidth: '400px' }}>

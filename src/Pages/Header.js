@@ -1,17 +1,11 @@
-import React, { useState } from 'react'
 import { useAuth } from '../Contexts/AuthContext'
 import { Link } from 'react-router-dom'
 
 export default function Header() {
-    const [error, setError] = useState('')
+
     const { currentUser, logout } = useAuth()
     async function handleLogOut() {
-        setError('')
-        try {
-            await logout()
-        } catch {
-            setError('Failed to log out')
-        }
+        await logout()
     }
 
 

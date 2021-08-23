@@ -46,13 +46,13 @@ export function AuthProvider({ children }) {
 
       for (let id in snapshot.val()) {
         const dbUser = snapshot.val()[id]
-        if (dbUser.email == user.email) {
+        if (dbUser.email === user.email) {
           setUserId(id)
           return
         }
       }
 
-      const key = dbRef.push({
+      dbRef.push({
         email: user.email,
       }).getKey()
 
@@ -60,7 +60,7 @@ export function AuthProvider({ children }) {
     })
   }
 
-function addZipCode(zipCode) {
+  function addZipCode(zipCode) {
     if (zipCode !== null && userId !== null) {
       const dbRef = db.ref(`users/${userId}/zipCodes`)
       dbRef.push(zipCode)

@@ -1,14 +1,11 @@
 import GoogleApiWrapper from '../Views/MapView'
 import ZipcodeSelector from '../Views/ZipcodeSelector'
-import geoData from '../Model/GEODATA';
+
 import UserZipCodes from '../Views/UserZipCodes'
 
-export default function HomePage() {
+export default function HomePage(props) {
 
 
-    let zipcodes = Object.entries(geoData).map((data, index) =>
-        data[0]
-    );
 
     return (
 
@@ -17,11 +14,11 @@ export default function HomePage() {
             <div className="row">
 
                 <div className="col-2">
-                    <ZipcodeSelector data={zipcodes} /><p />
+                    <ZipcodeSelector data={props.zipcodes} /><p />
 
                     <UserZipCodes />
                 </div>
-                <div className="col-10"><GoogleApiWrapper/></div>
+                <div className="col-10"><GoogleApiWrapper /></div>
 
             </div>
         </div>
