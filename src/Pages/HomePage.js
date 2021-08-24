@@ -8,17 +8,19 @@ export default function HomePage(props) {
 
 
     return (
-
-        <div className="container-fluid" >
+        <div className="container">
 
             <div className="row">
 
-                <div className="col-2">
+                <div className="col-lg-2">
                     <ZipcodeSelector data={props.zipcodes} /><p />
 
                     <UserZipCodes />
                 </div>
-                <div className="col-10"><GoogleApiWrapper /></div>
+
+                <div className="col-lg-10">
+                    <GoogleApiWrapper />
+                </div>
 
             </div>
         </div>

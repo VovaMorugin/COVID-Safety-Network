@@ -48,17 +48,7 @@ export default function ZipcodeSelector(props) {
             return;
         }
 
-        // // Data processing 
-        // let dataManager = new DataManager(selectedZipcode, data);
-
-        // dataManager.describe();
-        // dataManager.computeRelativeRanking(selectedZipcode, 91913);
-        // dataManager.computePercentile();
-        // dataManager.computeRanking();
-        // dataManager.populationForZipcode();
-        // dataManager.positivityRateIncreasing();
-        // dataManager.averagePositiveCaseRate();
-        // dataManager.lastWeekAveragePositiveCaseRate();
+        // // Data processing moved from here to ComparisonTable
     }
 
 
@@ -66,7 +56,7 @@ export default function ZipcodeSelector(props) {
 
 
     return (
-        <div style={{ marginTop: '40px' }}>
+        <div>
 
         Enter in zipcode:
 
