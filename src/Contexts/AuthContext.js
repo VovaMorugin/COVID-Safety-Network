@@ -55,8 +55,6 @@ export function AuthProvider({ children }) {
       dbRef.push({
         email: user.email,
       }).getKey()
-
-
     })
   }
 

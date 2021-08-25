@@ -8,6 +8,7 @@ export default function HomePage(props) {
 
 
     return (
+
         <div className="container">
 
             <div className="row">
@@ -20,10 +21,13 @@ export default function HomePage(props) {
 
                 <div className="col-lg-10">
                     <GoogleApiWrapper />
+
                 </div>
 
             </div>
+
         </div>
+
 
     )
 }

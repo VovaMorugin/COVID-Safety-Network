@@ -20,7 +20,7 @@ function MapContainer(props) {
     const [infectionRatesByZipcode, setInfectionRatesByZipcode] = React.useState(null)
     const [data, setData] = useState(null)
 
-    useEffect(() => {    
+    useEffect(() => {
         getDataForZipCode(selectedZipcode)
             .then((result) => setData(result))
             .catch(() => console.log('error'))
@@ -72,46 +72,49 @@ function MapContainer(props) {
     const handleOnClose = () => setZipcode(() => null)
 
     return (
-        <div>
-            <Map
-                google={props.google}
-                style={{ width: '80%', height: '80%' }}
-                zoom={10}
-                
-                initialCenter={defaultCenter}
-            >
-                {infectionRatesByZipcode !== null && Object.entries(geoData).map((data, index) => (
-                    <Polygon
-                        key={index}
-                        paths={data[1]}
-                        fillColor={getColor(data[0])}
-                        strokeWeight={0}
-                        fillOpacity={0.35}
-                        onClick={handleOnClick(data[0])}
+     
+          <div>
+        
+                <Map
+                    google={props.google}
+                    style={{ width: '80%', height: '80%' }}
+                    zoom={10}
+
+                    initialCenter={defaultCenter}
+                >
+                    {infectionRatesByZipcode !== null && Object.entries(geoData).map((data, index) => (
+                        <Polygon
+                            key={index}
+                            paths={data[1]}
+                            fillColor={getColor(data[0])}
+                            strokeWeight={0}
+                            fillOpacity={0.35}
+                            onClick={handleOnClick(data[0])}
+                        >
+
+                        </Polygon>
+
+                    ))}
+
+                    {data !== null && <InfoWindow
+
+                        position={selectedZipcode !== null ? zipCodeInfo[selectedZipcode].cityCenter : defaultCenter}
+                        visible={selectedZipcode !== null ? true : false}
+                        onClose={handleOnClose}
                     >
 
-                    </Polygon>
+                        <CaseModal data={data} />
+                    </InfoWindow>}
 
-                ))}
+                </Map>
+                
+                </div>
 
-                {data !== null && <InfoWindow
-
-                    position={selectedZipcode !== null ? zipCodeInfo[selectedZipcode].cityCenter : defaultCenter}
-                    visible={selectedZipcode !== null ? true : false}
-                    onClose={handleOnClose}
-                >
-
-                    <CaseModal data={data} />
-                </InfoWindow>}
-
-            </Map>
-
-        </div>
     );
 
 }
 
 export default GoogleApiWrapper({
-    apiKey: "AIzaSyAEzJ6VzdITMwC_iIJyp9Kt0IWKrzw7H60"
-    // apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
+    // apiKey: "AIzaSyAEzJ6VzdITMwC_iIJyp9Kt0IWKrzw7H60"
+    apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 })(MapContainer)

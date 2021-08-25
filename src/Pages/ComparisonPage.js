@@ -4,14 +4,14 @@ import { getLatestDataForAllZipCodes } from '../Model/APIManager'
 
 import ComparisonGraph from '../Views/ComparisonGraph'
 import ComparisonTable from '../Views/ComparisonTable'
-
-
+import { useAuth } from "../Contexts/AuthContext"
 
 export default function ComparisonPage(props) {
     const [firstZipCode, setFirstZipCode] = useState(null)
     const [secondZipCode, setSecondZipCode] = useState(null)
     const [data, setData] = useState(null)
     const [tableData, setTableData] = useState(null)
+    const { userZipCodes } = useAuth()
 
 
     const possibilities = props.data
@@ -45,7 +45,9 @@ export default function ComparisonPage(props) {
 
                 <div className="col-lg-2" >
                     {/* put selectors here */}
+                    
                     <div className="row" style={{ minHeight: '100px' }}>
+                
                         Enter in first zipcode:
 
                     <select className="ui fluid search dropdown"
@@ -58,6 +60,19 @@ export default function ComparisonPage(props) {
                                 </option>)}
 
                         </select>
+           
+                        {userZipCodes && <select className="ui fluid search dropdown"
+                            value='Saved locations:'
+                            onInput={(e) => setFirstZipCode(e.target.value)}
+                        >
+                            <option key='-1'>Saved locations:</option>
+                            {Object.keys(userZipCodes).map((key, index) =>
+                                <option key={index} zipcodeid={key}>
+                                    {userZipCodes[key]}
+                                </option>
+                            )}
+                        </select>}
+
                     </div>
 
                     <div className="row" >
@@ -73,6 +88,17 @@ export default function ComparisonPage(props) {
                                 </option>)}
 
                         </select>
+                        {userZipCodes && <select className="ui fluid search dropdown"
+                            value='Saved locations:'
+                            onInput={(e) => setSecondZipCode(e.target.value)}
+                        >
+                            <option key='-1'>Saved locations:</option>
+                            {Object.keys(userZipCodes).map((key, index) =>
+                                <option key={index} zipcodeid={key}>
+                                    {userZipCodes[key]}
+                                </option>
+                            )}
+                        </select>}
                     </div>
 
                 </div>
@@ -85,23 +111,23 @@ export default function ComparisonPage(props) {
 
             </div>
 
-            <div className="row" style={{marginTop: '80px'}}>
+            <div className="row" style={{ marginTop: '80px' }}>
 
                 <div className="col-lg-2">
                 </div>
 
                 <div className="col-lg-4" >
-                    <ComparisonTable zipcode={firstZipCode} data ={tableData} />
+                    <ComparisonTable zipcode={firstZipCode} data={tableData} />
                 </div>
 
                 <div className="col-lg-4" >
-                    <ComparisonTable zipcode={secondZipCode} data ={tableData} />
-                 </div>
+                    <ComparisonTable zipcode={secondZipCode} data={tableData} />
+                </div>
 
 
             </div>
         </div>
 
-        
+
     )
 }

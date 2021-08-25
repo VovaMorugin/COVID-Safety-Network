@@ -9,7 +9,6 @@ export default function UserZipCodes() {
     const [alreadySaved, setAlreadySaved] = useState(false)
 
     useEffect(() => {
-        console.log(alreadySaved)
         for (const id in userZipCodes) {
             if (userZipCodes[id] == selectedZipcode) {
                 setAlreadySaved(true)
@@ -50,25 +49,22 @@ export default function UserZipCodes() {
                 <Button variant="danger" onClick={handleDelete}>Remove from favourites ({selectedZipcode})</Button>}
 
             {userZipCodes != null && Object.keys(userZipCodes).length > 0 ?
-                Object.keys(userZipCodes).length === 1 ? <div>
-                    Favorite zip codes:
-                <Button variant="outline-primary" style={{ 'width': '100%' }} onClick={() => handleLoad(Object.values(userZipCodes)[0])}>{Object.values(userZipCodes)[0]}</Button>
-                </div>
-                    :
-                    <div>
-                        Favorite zip codes:
+               
+                    <>
+                        
                          <select className="ui fluid search dropdown"
-                            value={selectedZipcode}
+                            value='Saved locations:'
                             onInput={(e) => handleLoad(e.target.value)}
 
                         >
+                        <option key='-1'>Saved locations:</option>
                             {Object.keys(userZipCodes).map((key, index) =>
                                 <option key={index} zipcodeid={key}>
                                     {userZipCodes[key]}
                                 </option>
                             )}
                         </select>
-                    </div> : null}
+                    </> : null}
         </div>
 
     )
