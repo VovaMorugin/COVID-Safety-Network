@@ -1,5 +1,4 @@
 import { useAuth } from '../Contexts/AuthContext'
-import { Link } from 'react-router-dom'
 
 export default function Header() {
 
@@ -8,32 +7,46 @@ export default function Header() {
         await logout()
     }
 
-
-
     return (
-        <div className="container">
-            <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-                <a href="/" className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-                    <svg className="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"></svg>
-                </a>
+        <nav className="navbar navbar-expand-sm bg-white navbar-light border-bottom">
+            <div className="container-fluid px-5">
+                <div className="navbar-brand">Covid Safety Network</div>
 
-                <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="/" className="nav-link px-2 link-secondary">Home</a></li>
-                    <li><a href="/compare" className="nav-link px-2 link-dark">Compare</a></li>
-                </ul>
+                <button className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navmenu">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
 
-                <div className="col-md-3 text-end">
+                <div className="collapse navbar-collapse justify-content-between" id="navmenu">
+                    <div className="navbar-nav">
+                        <a href="/" className="nav-item nav-link text-primary">Home</a>
+                        <a href="/compare" className="nav-item nav-link text-primary">Compare</a>
+                    </div>
                     {currentUser !== null
-                        ? <><Link to='update'>{currentUser.email}</Link> <a href="/" type="button" className="btn btn-outline-primary me-2" onClick={handleLogOut}>Log Out</a></>
-                        : <>
-                            <a href="/login" type="button" className="btn btn-outline-primary me-2">Login</a>
-                            <a href="/signup" type="button" className="btn btn-primary">Sign-up</a>
-                        </>
+                        ? <div className="navbar-nav">
+                            <div className="nav-item dropdown">
+                                <div className="nav-link dropdown-toggle text-primary" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i className="bi bi-person-circle"> </i>
+                                    {currentUser.email}
+                                </div>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a className="dropdown-item text-primary" href="/update"><i className="bi bi-gear"> </i>Settings</a></li>
 
-                    }
+                                    <li><hr className="dropdown-divider" /></li>
+                                    <li><div className="dropdown-item text-primary" onClick={handleLogOut}><i className="bi bi-box-arrow-left"> </i>Log Out</div></li>
+                                </ul>
 
+
+                            </div>
+                        </div>
+                        : <div className="navbar-nav">
+                            <a href="/login" className="nav-item nav-link text-primary"><i className="bi bi-box-arrow-in-right"> </i>Login </a>
+                            <a href="/signup" className="nav-item nav-link text-primary"><i className="bi bi-person-plus-fill"> </i>Sign up </a>
+                        </div>}
                 </div>
-            </header>
-        </div>
+            </div>
+        </nav>
     )
 }

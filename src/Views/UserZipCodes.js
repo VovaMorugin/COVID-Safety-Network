@@ -1,5 +1,4 @@
 import { useContext, useState, useEffect } from 'react'
-import { Button } from 'react-bootstrap'
 import { useAuth } from "../Contexts/AuthContext"
 import ZipCodeContext from '../Contexts/zipCode'
 
@@ -41,30 +40,29 @@ export default function UserZipCodes() {
         setZipcode(zipCode)
     }
     return (
-        <div>
+        <div className="d-grid">
             {currentUser != null && selectedZipcode != null && !alreadySaved &&
-                <Button variant="primary" onClick={handleSave}>Add to favourites ({selectedZipcode})</Button>}
+                <button type="button" className="btn btn-primary btn-block" onClick={handleSave}>Add to favourites ({selectedZipcode})</button>}
 
             {userZipCodes && currentUser != null && selectedZipcode != null && alreadySaved &&
-                <Button variant="danger" onClick={handleDelete}>Remove from favourites ({selectedZipcode})</Button>}
+                <button type="button" className="btn btn-danger btn-block" onClick={handleDelete}>Remove from favourites ({selectedZipcode})</button>}
 
             {userZipCodes != null && Object.keys(userZipCodes).length > 0 ?
-               
-                    <>
-                        
-                         <select className="ui fluid search dropdown"
-                            value='Saved locations:'
-                            onInput={(e) => handleLoad(e.target.value)}
 
-                        >
+                <>
+
+                    <select className="ui fluid search dropdown"
+                        value='Saved locations:'
+                        onInput={(e) => handleLoad(e.target.value)}
+                    >
                         <option key='-1'>Saved locations:</option>
-                            {Object.keys(userZipCodes).map((key, index) =>
-                                <option key={index} zipcodeid={key}>
-                                    {userZipCodes[key]}
-                                </option>
-                            )}
-                        </select>
-                    </> : null}
+                        {Object.keys(userZipCodes).map((key, index) =>
+                            <option key={index} zipcodeid={key}>
+                                {userZipCodes[key]}
+                            </option>
+                        )}
+                    </select>
+                </> : null}
         </div>
 
     )

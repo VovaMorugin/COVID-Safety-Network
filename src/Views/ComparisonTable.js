@@ -30,7 +30,7 @@ export default function ComparisonTable(props) {
 
     return(
         <div>
-            <table class="ui celled table"  style={{ marginTop: '40px'}}>
+            <table className="ui celled table my-3">
 
             <thead>
                 <tr>
