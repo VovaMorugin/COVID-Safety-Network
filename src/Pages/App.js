@@ -3,7 +3,6 @@ import {
     BrowserRouter as Router,
     Route,
 } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
 import HomePage from './HomePage'
 import ComparisonPage from './ComparisonPage'
 import ZipCodeContext from '../Contexts/zipCode'
@@ -32,16 +31,10 @@ export default function App() {
                     <Route exact path={['/', '/compare']} component={Header} />
                     <Route exact path='/'><HomePage zipcodes={zipcodes} /></Route>
                     <Route exact path='/compare'><ComparisonPage data={zipcodes} /></Route>
-
-                    <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
-                        <div className='w-100' style={{ maxWidth: '400px' }}>
-                            <Route path='/forgot-password' component={ForgotPassword} />
-                            <Route path='/signup' component={Signup} />
-                            <Route path='/login' component={Login} />
-                            <Route path='/update' component={UpdateProfile} />
-                        </div>
-                    </Container>
-
+                    <Route path='/forgot-password' component={ForgotPassword} />
+                    <Route path='/signup' component={Signup} />
+                    <Route path='/login' component={Login} />
+                    <Route path='/update' component={UpdateProfile} />
 
                 </Router>
             </AuthProvider>

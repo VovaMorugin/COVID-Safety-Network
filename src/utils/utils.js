@@ -31,5 +31,4 @@ export const getCombinedData = async (firstZipCode, secondZipCode) => {
     }
 
     return result
-
 }
