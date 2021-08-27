@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react'
 import { useAuth } from "../Contexts/AuthContext"
 import ZipCodeContext from '../Contexts/zipCode'
-
+import zipCodeInfo from '../Model/ZIPCODES'
 export default function UserZipCodes() {
     const { selectedZipcode, setZipcode } = useContext(ZipCodeContext)
     const { userZipCodes, deleteZipCode, addZipCode, currentUser } = useAuth()
@@ -36,8 +36,9 @@ export default function UserZipCodes() {
         setAlreadySaved(false)
     }
 
-    const handleLoad = (zipCode) => {
-        setZipcode(zipCode)
+    const handleLoad = (target) => {
+
+        setZipcode(target.options[target.selectedIndex].getAttribute('zipcode'))
     }
     return (
         <div className="d-grid">
@@ -53,14 +54,15 @@ export default function UserZipCodes() {
 
                     <select className="ui fluid search dropdown"
                         value='Saved locations:'
-                        onInput={(e) => handleLoad(e.target.value)}
+                        onInput={(e) => handleLoad(e.target)}
                     >
                         <option key='-1'>Saved locations:</option>
-                        {Object.keys(userZipCodes).map((key, index) =>
-                            <option key={index} zipcodeid={key}>
-                                {userZipCodes[key]}
+                        {Object.keys(userZipCodes).map((key, index) => {
+                            console.log(key)
+                            return <option key={index} zipcode={userZipCodes[key]}>
+                                {`${userZipCodes[key]} ${zipCodeInfo[userZipCodes[key]].cityName}`}
                             </option>
-                        )}
+                        })}
                     </select>
                 </> : null}
         </div>

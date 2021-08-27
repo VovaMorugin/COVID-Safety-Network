@@ -2,17 +2,15 @@ import { useEffect, useContext, useState } from 'react';
 import ZipCodeContext from '../Contexts/zipCode'
 import { getLatestDataForAllZipCodes } from '../Model/APIManager'
 import ComparisonTable from '../Views/ComparisonTable';
-
+import Select from 'react-select'
 
 export default function ZipcodeSelector(props) {
 
-    const possibilities = props.data;
-
+    const options = props.options
 
     // changed useState to useContext to connect 2 components selector and mapview.
-    const {selectedZipcode, setZipcode} = useContext(ZipCodeContext)
+    const { selectedZipcode, setZipcode } = useContext(ZipCodeContext)
     const [data, setData] = useState(null)
-
 
 
     // Run processSelection() on any rerender WHEN the value of selectedZipcode has changed
@@ -50,25 +48,13 @@ export default function ZipcodeSelector(props) {
         // // Data processing moved from here to ComparisonTable
     }
 
-
-
     return (
         <div>
 
-        Enter in zipcode:
+            Enter in zipcode or city name:
+            <Select options={options} onChange={(data) => validateZipcode(data.value)} />
 
-            <select className="ui fluid search dropdown"
-                onInput={(e) => validateZipcode(e.target.value)}
-                value={selectedZipcode} >
-
-                {possibilities.map((zipcode, index) =>
-                    <option key={index}>
-                        {zipcode}
-                    </option>)}
-
-            </select>
-
-            <ComparisonTable zipcode={selectedZipcode} data ={data} />
+            <ComparisonTable zipcode={selectedZipcode} data={data} />
 
         </div>
     )

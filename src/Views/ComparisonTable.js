@@ -1,4 +1,3 @@
-import react from 'react';
 import DataManager from '../Model/DataManager';
 
 

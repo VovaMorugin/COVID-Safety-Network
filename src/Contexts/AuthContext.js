@@ -78,9 +78,7 @@ export function AuthProvider({ children }) {
         getUserId(user)
       }
       setLoading(false)
-
     })
-
     return unsubscribe
   }, [])
 

@@ -11,7 +11,8 @@ export default function HomePage(props) {
 
             <div className="row">
                 <div className="col-md-2 pb-5">
-                    <ZipcodeSelector data={props.zipcodes} /><p />
+                    <ZipcodeSelector options={props.options} /><p />
+
                     <UserZipCodes />
                 </div>
 

@@ -16,23 +16,6 @@ export const sortDates = (type) => (a, b) => {
     return dateA.join() > dateB.join() ? 1 : dateA.join() < dateB.join() ? -1 : 0
 }
 
-export const getCombinedData = async (firstZipCode, secondZipCode) => {
-    let firstData = null
-    let secondData = null
-    let result = []
-    await getDataForZipCode(firstZipCode)
-        .then((result) => firstData = result)
-    await getDataForZipCode(secondZipCode)
-        .then((result) => secondData = result)
-
-    for (const index in firstData) {
-
-        result.push({ date: firstData[index]['date'], [firstZipCode]: firstData[index]['cases'], [secondZipCode]: secondData[index]['cases'] })
-    }
-    console.log(result, 'this is the result')
-    return result
-}
-
 
 export const getData = async (locations) => {
     let result = []
