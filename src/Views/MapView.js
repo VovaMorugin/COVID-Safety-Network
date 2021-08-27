@@ -104,11 +104,10 @@ function MapContainer(props) {
 
         </Map >
 
-    );
-
+    )
 }
 
 export default GoogleApiWrapper({
-    // apiKey: "AIzaSyAEzJ6VzdITMwC_iIJyp9Kt0IWKrzw7H60"
-    apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
+    apiKey: "AIzaSyAEzJ6VzdITMwC_iIJyp9Kt0IWKrzw7H60"
+    // apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 })(MapContainer)
