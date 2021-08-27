@@ -118,7 +118,7 @@ const zipCodeInfo = {
         cityCenter: { lat: 33.08542, lng: -117.13688 },
     },
     92067: {
-        cityName: 'Fairbanks:Ranch',
+        cityName: 'Fairbanks Ranch',
         cityCenter: { lat: 33.02476, lng: -117.19604 },
     },
     92028: {
@@ -222,11 +222,11 @@ const zipCodeInfo = {
         cityCenter: { lat: 33.25429, lng: -116.55307 },
     },
     92019: {
-        cityName: 'Rancho:San Diego',
+        cityName: 'Rancho San Diego',
         cityCenter: { lat: 32.77969, lng: -116.87746 },
     },
     92091: {
-        cityName: 'Rancho:Santa Fe',
+        cityName: 'Rancho Santa Fe',
         cityCenter: { lat: 33.02453, lng: -117.20524 },
     },
     92101: {

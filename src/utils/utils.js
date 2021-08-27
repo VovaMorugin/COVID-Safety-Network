@@ -29,6 +29,24 @@ export const getCombinedData = async (firstZipCode, secondZipCode) => {
 
         result.push({ date: firstData[index]['date'], [firstZipCode]: firstData[index]['cases'], [secondZipCode]: secondData[index]['cases'] })
     }
+    console.log(result, 'this is the result')
+    return result
+}
 
+
+export const getData = async (locations) => {
+    let result = []
+    for (const location of locations) {
+        await getDataForZipCode(location['value'])
+            .then((data) => {
+                for (const index in data) {
+                    if (result[index] === undefined) {
+                        result.push({ date: data[index]['date'], [location['label']]: data[index]['cases'] })
+                    } else {
+                        result[index][location['label']] = data[index]['cases']
+                    }
+                }
+            })
+    }
     return result
 }

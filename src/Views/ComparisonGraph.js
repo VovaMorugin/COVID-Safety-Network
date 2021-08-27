@@ -2,35 +2,35 @@ import React from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function ComparisonGraph(props) {
-
+    const colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#00B3E6',
+        '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+        '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+        '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+        '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+        '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+        '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
+        '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+        '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
+        '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
     return (
-        <ResponsiveContainer width="80%" minHeight="500px">
+        <ResponsiveContainer width={'100%'} minHeight={'500px'}>
             {props.data != null ? <LineChart
                 data={props.data}
-                width={500}
-                height={300}
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                }}
-            >
 
+            >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                    <Line type="monotone" dataKey={props.firstZipCode} stroke="#8884d8" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey={props.secondZipCode} stroke="#82ca9d" activeDot={{ r: 8 }} />
-                </LineChart>
-
+                {props.selectedLocations.map((data, index) =>
+                    <Line key={index} type="monotone" dataKey={data.label} stroke={colorArray[index]} activeDot={{ r: 8 }} />
+                )}
+            </LineChart>
                 : <LineChart>
                     <XAxis />
                     <YAxis />
                 </LineChart>}
-
         </ResponsiveContainer>
     )
 }

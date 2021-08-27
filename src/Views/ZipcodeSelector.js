@@ -1,6 +1,5 @@
 import { useEffect, useContext, useState } from 'react';
 import ZipCodeContext from '../Contexts/zipCode'
-import DataManager from '../Model/DataManager';
 import { getLatestDataForAllZipCodes } from '../Model/APIManager'
 import ComparisonTable from '../Views/ComparisonTable';
 
@@ -50,8 +49,6 @@ export default function ZipcodeSelector(props) {
 
         // // Data processing moved from here to ComparisonTable
     }
-
-
 
 
 

@@ -1,32 +1,29 @@
 import { useState, useEffect } from 'react'
-import { getCombinedData } from '../utils/utils'
+import { getCombinedData, getData } from '../utils/utils'
 import { getLatestDataForAllZipCodes } from '../Model/APIManager'
 
 import ComparisonGraph from '../Views/ComparisonGraph'
 import ComparisonTable from '../Views/ComparisonTable'
 import { useAuth } from "../Contexts/AuthContext"
+import Select from 'react-select'
 
 export default function ComparisonPage(props) {
-    const [firstZipCode, setFirstZipCode] = useState(null)
-    const [secondZipCode, setSecondZipCode] = useState(null)
     const [data, setData] = useState(null)
     const [tableData, setTableData] = useState(null)
     const { userZipCodes } = useAuth()
+    const [selectedLocations, setSelectedLocations] = useState(null)
 
-
-    const possibilities = props.data
-
+    const options = props.options
     //For graph
+
     useEffect(() => {
-        if (firstZipCode != null & secondZipCode != null) {
-            getCombinedData(firstZipCode, secondZipCode)
+        if (selectedLocations != null) {
+            getData(selectedLocations)
                 .then((data) => {
                     setData(data)
-                    console.log(data)
                 })
         }
-    }, [firstZipCode, secondZipCode])
-
+    }, [selectedLocations])
 
     //For table
     useEffect(() => {
@@ -36,98 +33,41 @@ export default function ComparisonPage(props) {
     }, [])
 
 
-
     return (
 
-        <div className="container">
+        <div className="container my-5">
 
-            <div className="row">
+            <div className="d-flex flex-column">
 
-                <div className="col-lg-2" >
-                    {/* put selectors here */}
-                    
-                    <div className="row" style={{ minHeight: '100px' }}>
-                
-                        Enter in first zipcode:
-
-                    <select className="ui fluid search dropdown"
-                            onInput={(e) => setFirstZipCode(e.target.value)}
-                            value={firstZipCode} >
-                            {possibilities.map((zipcode, index) =>
-
-                                <option key={index}>
-                                    {zipcode}
-                                </option>)}
-
-                        </select>
-           
-                        {userZipCodes && <select className="ui fluid search dropdown"
-                            value='Saved locations:'
-                            onInput={(e) => setFirstZipCode(e.target.value)}
-                        >
-                            <option key='-1'>Saved locations:</option>
-                            {Object.keys(userZipCodes).map((key, index) =>
-                                <option key={index} zipcodeid={key}>
-                                    {userZipCodes[key]}
-                                </option>
-                            )}
-                        </select>}
-
-                    </div>
-
-                    <div className="row" >
-                        Enter in second zipcode:
-
-                    <select className="ui fluid search dropdown"
-                            onInput={(e) => setSecondZipCode(e.target.value)}
-                            value={secondZipCode} >
-                            {possibilities.map((zipcode, index) =>
-
-                                <option key={index}>
-                                    {zipcode}
-                                </option>)}
-
-                        </select>
-                        {userZipCodes && <select className="ui fluid search dropdown"
-                            value='Saved locations:'
-                            onInput={(e) => setSecondZipCode(e.target.value)}
-                        >
-                            <option key='-1'>Saved locations:</option>
-                            {Object.keys(userZipCodes).map((key, index) =>
-                                <option key={index} zipcodeid={key}>
-                                    {userZipCodes[key]}
-                                </option>
-                            )}
-                        </select>}
-                    </div>
-
-                </div>
-
-                <div className="col-lg-10">
+                <div className="mb-5">
                     {/* put graph here */}
 
-                    <ComparisonGraph data={data} firstZipCode={firstZipCode} secondZipCode={secondZipCode} />
+                    <Select options={options} isMulti={true} onChange={(values) => setSelectedLocations(values)} />
+                </div>
+
+                <div className="d-flex">
+                    {/* put graph here */}
+
+                    <ComparisonGraph data={data} selectedLocations={selectedLocations} />
                 </div>
 
             </div>
 
-            <div className="row" style={{ marginTop: '80px' }}>
+            {/* <div className="row" style={{ marginTop: '80px' }}>
 
                 <div className="col-lg-2">
-                </div>
+                </div> */}
 
-                <div className="col-lg-4" >
+            {/* <div className="col-lg-4" >
                     <ComparisonTable zipcode={firstZipCode} data={tableData} />
                 </div>
 
                 <div className="col-lg-4" >
                     <ComparisonTable zipcode={secondZipCode} data={tableData} />
-                </div>
+                </div> */}
 
 
-            </div>
+            {/* </div> */}
         </div>
-
-
     )
 }
