@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getCombinedData, getData } from '../utils/utils'
+import { getData } from '../utils/utils'
 import { getLatestDataForAllZipCodes } from '../Model/APIManager'
 
 import ComparisonGraph from '../Views/ComparisonGraph'

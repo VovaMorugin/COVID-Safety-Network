@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react"
-import { Form, Button, Card, Alert, Container } from "react-bootstrap"
-import { useAuth } from "../Contexts/AuthContext"
+import { useAuth } from '../../Contexts/AuthContext'
 import { Link } from "react-router-dom"
 
 export default function ForgotPassword() {
@@ -27,31 +26,29 @@ export default function ForgotPassword() {
     }
 
     return (
-        <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
+        <div className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
             <div className='w-100' style={{ maxWidth: '400px' }}>
-                <Card>
-                    <Card.Body>
+                <div className="card">
+                    <div className="card-body">
                         <h2 className="text-center mb-4">Password Reset</h2>
-                        {error && <Alert variant="danger">{error}</Alert>}
-                        {message && <Alert variant="success">{message}</Alert>}
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group id="email">
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" ref={emailRef} required />
-                            </Form.Group>
-                            <Button disabled={loading} className="w-100" type="submit">
-                                Reset Password
-            </Button>
-                        </Form>
+                        {error && <div className="alert alert-danger">{error}</div>}
+                        {message && <div className="alert alert-success">{message}</div>}
+                        <form onSubmit={handleSubmit}>
+                        <div className="form-group" id="email">
+                        <label className="form-label">Email</label>
+                        <input className="form-control" type="email" ref={emailRef} required />
+                            </div>
+                            <button type="submit" disabled={loading} class="w-100 btn btn-primary mt-4">Reset password</button>
+                        </form>
                         <div className="w-100 text-center mt-3">
                             <Link to="/login">Login</Link>
                         </div>
-                    </Card.Body>
-                </Card>
+                    </div>
+                </div>
                 <div className="w-100 text-center mt-2">
                     Need an account? <Link to="/signup">Sign Up</Link>
                 </div>
             </div>
-        </Container>
+        </div>
     )
 }
