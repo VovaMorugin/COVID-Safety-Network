@@ -66,6 +66,7 @@ export const getDataForZipCode = (selectedZipcode) => {
         }
     })
         .then(resp => {
+            console.log(resp)
             let cases = []
             for (const data of resp.data.features) {
                 const rawData = data['attributes']['current_date_range'].split('-')[1].split('/').slice(0, 2).join('/')

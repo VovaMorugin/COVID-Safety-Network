@@ -36,21 +36,15 @@ export default function ComparisonPage(props) {
     return (
 
         <div className="container my-5">
-
             <div className="d-flex flex-column">
-
                 <div className="mb-5">
                     {/* put graph here */}
-
                     <Select options={options} isMulti={true} onChange={(values) => setSelectedLocations(values)} />
                 </div>
-
                 <div className="d-flex">
                     {/* put graph here */}
-
                     <ComparisonGraph data={data} selectedLocations={selectedLocations} />
                 </div>
-
             </div>
 
             {/* <div className="row" style={{ marginTop: '80px' }}>

@@ -75,7 +75,7 @@ function MapContainer(props) {
         <Map
             google={props.google}
             zoom={10}
-            initialCenter={defaultCenter}          
+            initialCenter={defaultCenter}
         >
             { infectionRatesByZipcode !== null && Object.entries(geoData).map((data, index) => (
                 <Polygon
@@ -98,7 +98,7 @@ function MapContainer(props) {
                     visible={selectedZipcode !== null ? true : false}
                     onClose={handleOnClose}
                 >
-                    <CaseModal data={data} />
+                    <CaseModal data={data} selectedZipcode={selectedZipcode} />
                 </InfoWindow>
             }
 

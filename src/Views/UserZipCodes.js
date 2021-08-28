@@ -25,7 +25,6 @@ export default function UserZipCodes() {
     const handleDelete = () => {
         let zipCodeId = null
         for (const key in userZipCodes) {
-            console.log(userZipCodes[key])
             if (userZipCodes[key] == selectedZipcode) {
                 zipCodeId = key
             }
@@ -37,7 +36,6 @@ export default function UserZipCodes() {
     }
 
     const handleLoad = (target) => {
-
         setZipcode(target.options[target.selectedIndex].getAttribute('zipcode'))
     }
     return (
@@ -58,7 +56,6 @@ export default function UserZipCodes() {
                     >
                         <option key='-1'>Saved locations:</option>
                         {Object.keys(userZipCodes).map((key, index) => {
-                            console.log(key)
                             return <option key={index} zipcode={userZipCodes[key]}>
                                 {`${userZipCodes[key]} ${zipCodeInfo[userZipCodes[key]].cityName}`}
                             </option>
