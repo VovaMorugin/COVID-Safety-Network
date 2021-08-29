@@ -7,7 +7,6 @@ import zipCodeInfo from '../Model/ZIPCODES'
 import { getDataForZipCode, getDataForHeatmap } from '../Model/APIManager'
 
 
-
 function MapContainer(props) {
 
     const defaultCenter = {

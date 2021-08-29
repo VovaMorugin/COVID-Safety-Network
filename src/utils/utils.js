@@ -1,4 +1,4 @@
-import { getDataForZipCode } from '../Model/APIManager'
+import { getDataForZipCode, getRawDataForZipCode } from '../Model/APIManager'
 
 export const sortDates = (type) => (a, b) => {
 
@@ -27,6 +27,36 @@ export const getData = async (locations) => {
                         result.push({ date: data[index]['date'], [location['label']]: data[index]['cases'] })
                     } else {
                         result[index][location['label']] = data[index]['cases']
+                    }
+                }
+            })
+    }
+    return result
+}
+
+
+
+export const getDataForGraph = async (locations) => {
+    let result = []
+    for (const location of locations) {
+        await getRawDataForZipCode(location['value'])
+            .then((data) => {
+                for (const index in data) {
+                    if (result[index] === undefined) {
+
+                        result.push({
+                            date: data[index]['date'], [location['label']]:
+                            {
+                                per_thousand: Math.round(data[index].positive_tests_in_7_day_testing / data[index].population * 1000 * 10) / 10,
+                                ...data[index]
+                            }
+                        })
+
+                    } else {
+                        result[index][location['label']] = {
+                            per_thousand: Math.round(data[index].positive_tests_in_7_day_testing / data[index].population * 1000 * 10) / 10,
+                            ...data[index]
+                        }
                     }
                 }
             })

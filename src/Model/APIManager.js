@@ -66,7 +66,7 @@ export const getDataForZipCode = (selectedZipcode) => {
         }
     })
         .then(resp => {
-            console.log(resp)
+
             let cases = []
             for (const data of resp.data.features) {
                 const rawData = data['attributes']['current_date_range'].split('-')[1].split('/').slice(0, 2).join('/')
@@ -76,6 +76,28 @@ export const getDataForZipCode = (selectedZipcode) => {
             return cases.sort(sortDates('custom'))
         })
 }
+
+export const getRawDataForZipCode = (selectedZipcode) => {
+    return axios.get(API_URL, {
+        params: {
+            ...defaultParams,
+            where: `current_date_range >= '${startingMonth}' AND zip_code like '%${selectedZipcode}%'`
+        }
+    })
+        .then(resp => {
+            let cases = []
+            
+            for (const data of resp.data.features) {
+                const rawDate = data['attributes']['current_date_range'].split('-')[1].split('/').slice(0, 2).join('/')
+                cases.push({ 
+                    date: rawDate, 
+                   ...data['attributes']
+                })
+            }
+            return cases.sort(sortDates('custom'))
+        })
+}
+
 
 
 export const getDataForHeatmap = () => {

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
-import { getData } from '../utils/utils'
+import { getDataForGraph } from '../utils/utils'
 import { getLatestDataForAllZipCodes } from '../Model/APIManager'
-
 import ComparisonGraph from '../Views/ComparisonGraph'
 import ComparisonTable from '../Views/ComparisonTable'
 import { useAuth } from "../Contexts/AuthContext"
@@ -18,7 +17,7 @@ export default function ComparisonPage(props) {
 
     useEffect(() => {
         if (selectedLocations != null) {
-            getData(selectedLocations)
+            getDataForGraph(selectedLocations)
                 .then((data) => {
                     setData(data)
                 })
