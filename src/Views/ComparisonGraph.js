@@ -18,38 +18,49 @@ export default function ComparisonGraph(props) {
 
 
     return (
+
         <div className="col-12" >
-            <ResponsiveContainer width={'100%'} minHeight={'500px'}>
-                {props.data != null && props.data.length > 0 ? <LineChart
-                    data={props.data}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
 
-                    {props.selectedLocations.map((zipCode, index) =>
+            {props.data != null && props.data.length ? <div className="d-flex justify-content-evenly pb-3">
+                {dataType === 'positive_tests_in_7_day_testing'
+                    ? <h2>The graph shows the absolute number of new cases in the selected location by week.</h2>
+                    : <h2>The graph shows the relative ratio of new cases per thousand people for the selected location by week</h2>}
+            </div> : null}
+            <ResponsiveContainer width={'100%'} minHeight={'400px'}>
 
-                        <Line key={index}
-                            type="monotone"
-                            dataKey={`${zipCode.label}.${dataType}`}
-                            name={`${zipCode.label}`}
-                            stroke={colorArray[index]}
-                            activeDot={{ r: 8 }}
+                {props.data != null && props.data.length > 0 ?
+                    <LineChart
+                        data={props.data}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
 
-                        />
-                    )}
-                </LineChart>
+                        {props.selectedLocations.map((zipCode, index) =>
+
+                            <Line key={index}
+                                type="monotone"
+                                dataKey={`${zipCode.label}.${dataType}`}
+                                name={`${zipCode.label}`}
+                                stroke={colorArray[index]}
+                                activeDot={{ r: 8 }}
+                            />
+                        )}
+                    </LineChart>
+
                     : <div className="d-flex align-items-center justify-content-center" style={{ backgroundImage: "url(/placeholder.png", minHeight: '500px', 'backgroundSize': '100% 100%' }}>
                         <h1>Select locations</h1>
                     </div>}
-
             </ResponsiveContainer>
-            <div className="d-flex justify-content-evenly ">
+
+
+            {props.data != null && props.data.length ? <div className="d-flex justify-content-evenly">
                 <button className="btn btn-primary" disabled={dataType === 'positive_tests_in_7_day_testing'} onClick={() => setDataType('positive_tests_in_7_day_testing')}>Show absolute numbers</button>
                 <button className="btn btn-primary" disabled={dataType === 'per_thousand'} onClick={() => setDataType('per_thousand')}>Show cases per thousand</button>
-            </div>
+            </div> : null}
+
         </div>
     )
 }
