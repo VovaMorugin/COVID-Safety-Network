@@ -21,7 +21,7 @@ export default function HomePage(props) {
 
                     <div style={{
                         'position': 'relative',
-                        'paddingBottom': '60%',
+                        'paddingBottom': '50%',
                         'overflow': 'hidden'
                     }}>
                         <GoogleApiWrapper />
@@ -44,6 +44,7 @@ export default function HomePage(props) {
 
 
             </div>
+
 
         </div >
     )

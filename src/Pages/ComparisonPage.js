@@ -61,6 +61,8 @@ export default function ComparisonPage(props) {
 
 
             {/* </div> */}
+
+          
         </div>
     )
 }

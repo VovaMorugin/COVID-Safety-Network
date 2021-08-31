@@ -18,7 +18,6 @@ export default function Header() {
                     data-bs-target="#navmenu">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-
                 <div className="collapse navbar-collapse justify-content-between" id="navmenu">
                     <div className="navbar-nav">
                         <a href="/" className="nav-item nav-link text-primary">Home</a>
@@ -37,8 +36,6 @@ export default function Header() {
                                     <li><hr className="dropdown-divider" /></li>
                                     <li><div className="dropdown-item text-primary" onClick={handleLogOut}><i className="bi bi-box-arrow-left"> </i>Log Out</div></li>
                                 </ul>
-
-
                             </div>
                         </div>
                         : <div className="navbar-nav">
