@@ -89,7 +89,6 @@ function MapContainer(props) {
                 </Polygon>
 
             ))}
-
             {
                 data !== null && <InfoWindow
 
@@ -100,7 +99,6 @@ function MapContainer(props) {
                     <CaseModal data={data} selectedZipcode={selectedZipcode} />
                 </InfoWindow>
             }
-
         </Map >
     )
 }

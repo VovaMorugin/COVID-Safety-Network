@@ -35,7 +35,7 @@ export default function HomePage(props) {
                             <div style={{ 'backgroundColor': '#ff9600', 'width': '5%' }}>&nbsp;</div>
                             <div style={{ 'backgroundColor': '#d9002c', 'width': '5%' }}>&nbsp;</div>
                             <div style={{ 'backgroundColor': '#790019', 'width': '5%', 'borderRadius': '0 15px 15px 0' }}>&nbsp;</div>
-                            <div className="ps-3">Hight</div>
+                            <div className="ps-3">High</div>
                         </div>
 
 
