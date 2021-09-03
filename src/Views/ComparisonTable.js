@@ -41,23 +41,23 @@ export default function ComparisonTable(props) {
             <tbody>
 
                 <tr>
-                <td>Ranking</td>
-                <td>{ranking}</td>
+                <td>Ranking </td>
+                <td data-tooltip="Ranking is computed by ordering all San Diego zip codes. With #1 having the least cases and #84 having the most." data-position="right center">{ranking}</td>
                 </tr>
 
                 <tr>
                 <td>Number of cases:</td>
-                <td>{numberOfCases}</td>
+                <td data-tooltip="The number of new cases recorded this week." data-position="right center">{numberOfCases}</td>
                 </tr>
 
                 <tr>
                 <td>Percentile</td>
-                <td>{percentile}</td>
+                <td data-tooltip="The percentage of zipcodes (out of 100) with as many or less COVID cases than this one. Lower is better. " data-position="right center">{percentile}</td>
                 </tr>
 
                 <tr className={trendColor}>
                 <td>Trend</td>
-                <td>{isRateIncreasing}</td>
+                <td data-tooltip="Did the percentage of positive cases increase or decrease since last weeek? " data-position="right center">{isRateIncreasing}</td>
                 </tr>
 
                 <tr>
