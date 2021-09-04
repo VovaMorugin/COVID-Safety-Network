@@ -49,7 +49,7 @@ export default function Signup() {
                                 <label className="form-label">Password Confirmation</label>
                                 <input className="form-control" type="password" ref={passwordConfirmRef} required />
                             </div>
-                            <button type="submit" disabled={loading} class="w-100 btn btn-primary mt-4">Sign Up</button>
+                            <button type="submit" disabled={loading} className="w-100 btn btn-primary mt-4">Sign Up</button>
                         </form>
                     </div>
                 </div>

@@ -1,8 +1,8 @@
 import { useAuth } from '../Contexts/AuthContext'
 
 export default function Header() {
-
     const { currentUser, logout } = useAuth()
+
     async function handleLogOut() {
         await logout()
     }

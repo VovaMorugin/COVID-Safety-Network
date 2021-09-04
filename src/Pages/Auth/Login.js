@@ -17,7 +17,7 @@ export default function Login() {
             setError("")
             setLoading(true)
             await login(emailRef.current.value, passwordRef.current.value)
-            history.push("/")
+            history.goBack()
         } catch {
             setError("Failed to sign in")
         }
@@ -42,7 +42,7 @@ export default function Login() {
                                 <input className="form-control" type="password" ref={passwordRef} required />
                             </div>
 
-                            <button type="submit" disabled={loading} class="w-100 btn btn-primary mt-4">Log In</button>
+                            <button type="submit" disabled={loading} className="w-100 btn btn-primary mt-4">Log In</button>
                         </form>
                         <div className="w-100 text-center mt-3">
                             <Link to="/forgot-password">Forgot Password?</Link>

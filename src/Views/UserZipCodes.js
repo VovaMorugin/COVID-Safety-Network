@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from 'react'
 import { useAuth } from "../Contexts/AuthContext"
 import ZipCodeContext from '../Contexts/zipCode'
 import zipCodeInfo from '../Model/ZIPCODES'
+
 export default function UserZipCodes() {
     const { selectedZipcode, setZipcode } = useContext(ZipCodeContext)
     const { userZipCodes, deleteZipCode, addZipCode, currentUser } = useAuth()

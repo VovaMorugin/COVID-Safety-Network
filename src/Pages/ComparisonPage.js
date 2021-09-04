@@ -1,19 +1,28 @@
 import { useState, useEffect } from 'react'
 import { getDataForGraph } from '../utils/utils'
-import { getLatestDataForAllZipCodes } from '../Model/APIManager'
 import ComparisonGraph from '../Views/ComparisonGraph'
-import ComparisonTable from '../Views/ComparisonTable'
 import { useAuth } from "../Contexts/AuthContext"
 import Select from 'react-select'
+import zipCodeInfo from '../Model/ZIPCODES'
 
 export default function ComparisonPage(props) {
     const [data, setData] = useState(null)
-    const [tableData, setTableData] = useState(null)
-    const { userZipCodes } = useAuth()
+    const { userZipCodes, currentUser } = useAuth()
     const [selectedLocations, setSelectedLocations] = useState(null)
+    const [favourites, setFavourites] = useState([])
 
-    const options = props.options
-    //For graph
+
+    useEffect(() => {
+        if (userZipCodes !== null && userZipCodes !== 'undefined' && currentUser != null) {
+            setFavourites(Object.entries(userZipCodes).map((data, index) => {
+                return { value: `${data[1]}`, label: `${data[1]} ${zipCodeInfo[data[1]].cityName}` }
+            }))
+            
+        } else {
+            setFavourites([])
+        }
+    }, [userZipCodes, currentUser])
+
 
     useEffect(() => {
         if (selectedLocations != null) {
@@ -24,13 +33,19 @@ export default function ComparisonPage(props) {
         }
     }, [selectedLocations])
 
-    //For table
-    useEffect(() => {
-        getLatestDataForAllZipCodes()
-            .then((result) => setTableData(result))
-            .catch(() => console.log('error'))
-    }, [])
+    //removes user's favourites from main list of all locations to avoid duplicates
+    let filteredOptions = props.options.filter(o1 => !favourites.some(o2 => o1.value === o2.value));
 
+    const options = [
+        {
+            label: 'Favourites',
+            options: favourites
+        },
+        {
+            label: 'All locations',
+            options: filteredOptions
+        }
+    ]
 
     return (
 
@@ -45,24 +60,6 @@ export default function ComparisonPage(props) {
                     <ComparisonGraph data={data} selectedLocations={selectedLocations} />
                 </div>
             </div>
-
-            {/* <div className="row" style={{ marginTop: '80px' }}>
-
-                <div className="col-lg-2">
-                </div> */}
-
-            {/* <div className="col-lg-4" >
-                    <ComparisonTable zipcode={firstZipCode} data={tableData} />
-                </div>
-
-                <div className="col-lg-4" >
-                    <ComparisonTable zipcode={secondZipCode} data={tableData} />
-                </div> */}
-
-
-            {/* </div> */}
-
-          
         </div>
     )
 }

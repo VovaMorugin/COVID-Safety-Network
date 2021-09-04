@@ -61,7 +61,7 @@ export default function UpdateProfile() {
                                 <label className="form-label">Password Confirmation</label>
                                 <input className="form-control" type="password" ref={passwordConfirmRef} placeholder="Leave blank to keep the same" />
                             </div>
-                            <button type="submit" disabled={loading} class="w-100 btn btn-primary mt-4">Update</button>
+                            <button type="submit" disabled={loading} className="w-100 btn btn-primary mt-4">Update</button>
                         </form>
                     </div>
                 </div>
