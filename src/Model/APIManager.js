@@ -57,7 +57,7 @@ const getInfectionRatesInfo = (range) => {
         })
 }
 
-
+// return number of cases per thousand people and dates
 export const getDataForZipCode = (selectedZipcode) => {
     return axios.get(API_URL, {
         params: {
@@ -70,8 +70,8 @@ export const getDataForZipCode = (selectedZipcode) => {
             let cases = []
             for (const data of resp.data.features) {
                 const rawData = data['attributes']['current_date_range'].split('-')[1].split('/').slice(0, 2).join('/')
-                const number = data['attributes']['positive_tests_in_7_day_testing']
-                cases.push({ date: rawData, cases: number })
+                const newNumber = Math.round(data['attributes'].positive_tests_in_7_day_testing / data['attributes'].population * 1000 * 10) / 10
+                cases.push({ date: rawData, cases: newNumber })
             }
             return cases.sort(sortDates('custom'))
         })

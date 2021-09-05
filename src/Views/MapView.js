@@ -5,7 +5,7 @@ import CaseModal from './CaseModal'
 import ZipCodeContext from '../Contexts/zipCode'
 import zipCodeInfo from '../Model/ZIPCODES'
 import { getDataForZipCode, getDataForHeatmap } from '../Model/APIManager'
-
+import {getDataForGraph} from '../utils/utils'
 
 function MapContainer(props) {
 
@@ -19,11 +19,23 @@ function MapContainer(props) {
     const [infectionRatesByZipcode, setInfectionRatesByZipcode] = React.useState(null)
     const [data, setData] = useState(null)
 
+    // useEffect(() => {
+    //     if (selectedZipcode != null) {
+    //         getDataForGraph([selectedZipcode)
+    //             .then((data) => {
+    //                 setData(data)
+    //             })
+    //     }
+    // }, [selectedZipcode])
+
+
     useEffect(() => {
         getDataForZipCode(selectedZipcode)
             .then((result) => setData(result))
             .catch(() => console.log('error'))
     }, [selectedZipcode])
+
+
 
     useEffect(() => {
         getDataForHeatmap()
@@ -104,6 +116,6 @@ function MapContainer(props) {
 }
 
 export default GoogleApiWrapper({
-    apiKey: "AIzaSyAEzJ6VzdITMwC_iIJyp9Kt0IWKrzw7H60"
-    // apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
+    // apiKey: "AIzaSyAEzJ6VzdITMwC_iIJyp9Kt0IWKrzw7H60"
+    apiKey: (process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 })(MapContainer)

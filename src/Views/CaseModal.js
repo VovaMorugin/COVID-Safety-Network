@@ -10,14 +10,16 @@ import {
 import zipCodeInfo from '../Model/ZIPCODES'
 
 export default function CaseModal({ data, selectedZipcode }) {
-    console.log(selectedZipcode, 'sdfsdfdf')
+    console.log(data, 'sdfsdfdf')
 
     return (
         <div className="d-flex flex-column">
-            {selectedZipcode !== null && <div className="d-flex justify-content-center"><h5>Number of new COVID-19 cases for {zipCodeInfo[selectedZipcode].cityName} {selectedZipcode}</h5></div>}
+            {selectedZipcode !== null && 
+           
+            <div className="d-flex pb-2 justify-content-center"><h5>{zipCodeInfo[selectedZipcode].cityName} {selectedZipcode}</h5></div>}
             <LineChart
                 width={500}
-                height={300}
+                height={200}
                 data={data}
                 margin={{
                     top: 5,
@@ -30,10 +32,11 @@ export default function CaseModal({ data, selectedZipcode }) {
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="cases" stroke="#82ca9d" activeDot={{ r: 8 }} />
+                {/* <Legend /> */}
+                <Line type="monotone" dataKey="cases" stroke="#82ca9d" />
 
             </LineChart>
+            <div className="d-flex pt-2 justify-content-center">Number of new COVID-19 cases per thousand people by week.</div>
         </div>
     )
 
