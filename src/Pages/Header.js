@@ -10,7 +10,7 @@ export default function Header() {
     return (
         <nav className="navbar navbar-expand-sm bg-white navbar-light border-bottom">
             <div className="container-fluid px-5">
-                <div className="navbar-brand">Covid Safety Network</div>
+                <div className="navbar-brand">Covid Safety Network <sup>San Diego</sup></div>
 
                 <button className="navbar-toggler"
                     type="button"
