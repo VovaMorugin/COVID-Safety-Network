@@ -7,7 +7,7 @@ const defaultParams = {
     f: 'json'
 }
 
-const startingMonth = '7'
+const startingMonth = '8'
 const API_URL = 'https://gis-public.sandiegocounty.gov/arcgis/rest/services/Hosted/COVID19_CaseRateData/FeatureServer/1/query'
 
 
@@ -66,7 +66,7 @@ export const getDataForZipCode = (selectedZipcode) => {
         }
     })
         .then(resp => {
-
+            console.log(resp.data.features[7])
             let cases = []
             for (const data of resp.data.features) {
                 const rawData = data['attributes']['current_date_range'].split('-')[1].split('/').slice(0, 2).join('/')
