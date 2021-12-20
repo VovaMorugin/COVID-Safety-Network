@@ -7,7 +7,7 @@ const defaultParams = {
     f: 'json'
 }
 
-const startingMonth = '8'
+const startingMonth = '10'
 const API_URL = 'https://gis-public.sandiegocounty.gov/arcgis/rest/services/Hosted/COVID19_CaseRateData/FeatureServer/1/query'
 
 
